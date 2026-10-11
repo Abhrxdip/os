@@ -31,16 +31,6 @@
 
 ---
 
-> 🏆 **1st Place Winner** at [Buildathon @ Turin](https://lu.ma/turinbuildathon) (March 28, 2026) — an MCP Apps hackathon hosted by [Fonderia](https://fonderia.dev) at OGR Torino, sponsored by Manufact, Alpic, Xolo, Lexroom & Fractal. Built in a single day, this project won first place out of 89 participants for its innovative approach to AI-powered personal agents.
-
----
-
-## 🎬 Live Demo
-
-https://github.com/user-attachments/assets/387ea66f-42a8-429b-a31e-bd804cc13932
-
----
-
 # 🚀 Executive Summary & The Core Problem
 
 ### The AI Amnesia & Siloed Intelligence Crisis
