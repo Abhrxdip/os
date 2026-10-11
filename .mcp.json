@@ -5,7 +5,7 @@
     },
     "digital-twin": {
       "type": "http",
-      "url": "https://huge-narrow-jennifer-mas.trycloudflare.com/mcp"
+      "url": "https://simulations-src-collins-availability.trycloudflare.com/mcp"
     }
   }
 }
