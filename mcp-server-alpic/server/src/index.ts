@@ -31,6 +31,8 @@ import {
   listCheckpoints,
   resumeTask,
   getTaskById,
+  getAllTasks,
+  findTask,
   getTaskTransitions,
   getStorageBudget,
   type TaskState,
@@ -780,6 +782,49 @@ server.registerTool(
       });
     } catch (err) {
       return mcpError(`Error creating continuity task: ${String(err)}`);
+    }
+  })
+);
+
+// 1b. list-tasks
+server.registerTool(
+  "list-tasks",
+  {
+    description:
+      "List all active, paused, interrupted, or completed tasks in the Work Continuity Engine. Returns task IDs, titles, current states, objectives, and latest checkpoints so any agent (like Cursor or ChatGPT) can discover and resume existing work.",
+    inputSchema: {
+      query: z.string().optional().describe("Optional search filter for task title or objective"),
+      state: z.string().optional().describe("Optional filter by state (e.g. 'in_progress', 'paused', 'interrupted', 'completed')"),
+    },
+  },
+  withAuth(async ({ query, state }, { userId }) => {
+    try {
+      let tasks = getAllTasks(userId);
+      if (state) {
+        tasks = tasks.filter((t) => t.current_state === state);
+      }
+      if (query) {
+        const q = query.toLowerCase().trim();
+        tasks = tasks.filter(
+          (t) => t.title.toLowerCase().includes(q) || t.objective.toLowerCase().includes(q) || t.id.toLowerCase() === q
+        );
+      }
+      return object({
+        count: tasks.length,
+        tasks: tasks.map((t) => ({
+          id: t.id,
+          title: t.title,
+          current_state: t.current_state,
+          objective: t.objective,
+          source_platform: t.source_platform,
+          source_agent: t.source_agent,
+          latest_checkpoint_id: t.latest_checkpoint_id ?? null,
+          used_bytes: t.used_bytes,
+          updated_at: t.updated_at,
+        })),
+      });
+    } catch (err) {
+      return mcpError(`Error listing tasks: ${String(err)}`);
     }
   })
 );

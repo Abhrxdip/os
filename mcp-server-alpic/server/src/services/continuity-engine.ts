@@ -155,6 +155,7 @@ const VALID_TRANSITIONS: Record<TaskState, readonly TaskState[]> = {
     "paused",
     "interrupted",
     "waiting_for_agent",
+    "resuming",
     "validating",
     "failed",
     "cancelled",
@@ -723,37 +724,37 @@ export async function resumeTask(
     receivingPlatform?: string;
   }
 ): Promise<ContinuationPackage> {
-  const store = loadStore();
-  const task = store.tasks[taskId];
+  const task = findTask(userId, taskId);
   if (!task) {
-    throw new Error(`Task with ID "${taskId}" not found.`);
+    throw new Error(`Task "${taskId}" not found.`);
   }
+  const resolvedTaskId = task.id;
 
   // Find latest checkpoint
-  const checkpoints = listCheckpoints(userId, taskId);
+  const checkpoints = listCheckpoints(userId, resolvedTaskId);
   const latestCheckpoint = checkpoints[0];
   if (!latestCheckpoint) {
-    throw new Error(`Cannot resume task "${taskId}": No saved checkpoints found.`);
+    throw new Error(`Cannot resume task "${task.title}": No saved checkpoints found.`);
   }
 
   // Load all latest artifacts associated with this checkpoint
   const latestArtifacts: ContinuityArtifact[] = [];
   for (const snap of latestCheckpoint.artifact_snapshots) {
-    const art = getArtifact(userId, taskId, snap.path, snap.version);
+    const art = getArtifact(userId, resolvedTaskId, snap.path, snap.version);
     if (art) {
       latestArtifacts.push(art);
     }
   }
 
   // Update task state: interrupted/paused/failed -> resuming -> in_progress
-  await updateTaskState(supabase, userId, taskId, "resuming", {
+  await updateTaskState(supabase, userId, resolvedTaskId, "resuming", {
     trigger: "resume_task_requested",
     agent: params?.receivingAgent,
     platform: params?.receivingPlatform,
     checkpointId: latestCheckpoint.id,
   });
 
-  await updateTaskState(supabase, userId, taskId, "in_progress", {
+  await updateTaskState(supabase, userId, resolvedTaskId, "in_progress", {
     trigger: "continuation_package_delivered",
     agent: params?.receivingAgent,
     platform: params?.receivingPlatform,
@@ -795,7 +796,7 @@ ${latestArtifacts
 
   const handoffSummary = `Resumed task "${task.title}". Checkpoint "${latestCheckpoint.name}" restored with ${latestArtifacts.length} artifact(s). Next action: ${latestCheckpoint.next_recommended_action}`;
 
-  const updatedTask = getTaskById(userId, taskId) || task;
+  const updatedTask = getTaskById(userId, resolvedTaskId) || task;
 
   return {
     task: updatedTask,
@@ -813,15 +814,32 @@ export function getAllTasks(userId: string): ContinuityTask[] {
     .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
 }
 
-export function getTaskById(userId: string, taskId: string): ContinuityTask | null {
+export function findTask(userId: string, idOrQuery: string): ContinuityTask | null {
   const store = loadStore();
-  const t = store.tasks[taskId];
-  return t && t.user_id === userId ? t : null;
+  if (store.tasks[idOrQuery] && store.tasks[idOrQuery].user_id === userId) {
+    return store.tasks[idOrQuery];
+  }
+  const userTasks = Object.values(store.tasks).filter((t) => t.user_id === userId);
+  const q = idOrQuery.toLowerCase().trim();
+  const match = userTasks.find(
+    (t) =>
+      t.id.toLowerCase() === q ||
+      t.title.toLowerCase() === q ||
+      t.title.toLowerCase().includes(q) ||
+      t.objective.toLowerCase().includes(q)
+  );
+  return match || null;
+}
+
+export function getTaskById(userId: string, taskId: string): ContinuityTask | null {
+  return findTask(userId, taskId);
 }
 
 export function getTaskTransitions(userId: string, taskId: string): StateTransition[] {
   const store = loadStore();
+  const task = findTask(userId, taskId);
+  const resolvedId = task ? task.id : taskId;
   return store.transitions
-    .filter((t) => t.task_id === taskId && t.user_id === userId)
+    .filter((t) => t.task_id === resolvedId && t.user_id === userId)
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }

@@ -33,15 +33,22 @@ export async function getPlan(
   userId: string,
   searchTerm: string
 ): Promise<SavedPlan | null> {
-  const { data, error } = await supabase.rpc("search_plans_by_name", {
-    p_user_id: userId,
-    p_search_term: searchTerm,
-  });
+  try {
+    const { data, error } = await supabase.rpc("search_plans_by_name", {
+      p_user_id: userId,
+      p_search_term: searchTerm,
+    });
 
-  if (error) throw new Error(`Error searching plan: ${error.message}`);
-  if (!data || data.length === 0) return null;
+    if (error) {
+      console.warn(`[Plans] search_plans_by_name notice: ${error.message}`);
+      return null;
+    }
+    if (!data || data.length === 0) return null;
 
-  return data[0] as SavedPlan;
+    return data[0] as SavedPlan;
+  } catch {
+    return null;
+  }
 }
 
 export async function listPlans(
@@ -58,15 +65,22 @@ export async function listPlans(
     updated_at: string;
   }[]
 > {
-  const { data, error } = await supabase
-    .from("plans")
-    .select("id, name, description, status, agent_ids, created_at, updated_at")
-    .eq("user_id", userId)
-    .order("updated_at", { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from("plans")
+      .select("id, name, description, status, agent_ids, created_at, updated_at")
+      .eq("user_id", userId)
+      .order("updated_at", { ascending: false });
 
-  if (error) throw new Error(`Error listing plans: ${error.message}`);
+    if (error) {
+      console.warn(`[Plans] Plans table notice: ${error.message}`);
+      return [];
+    }
 
-  return data ?? [];
+    return data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export async function updatePlanStatus(

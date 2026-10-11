@@ -5,17 +5,23 @@ export async function getUnreadNotifications(
   supabase: SupabaseClient,
   userId: string
 ): Promise<readonly Notification[]> {
-  const { data, error } = await supabase
-    .from("notifications")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("is_read", false)
-    .order("created_at", { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("is_read", false)
+      .order("created_at", { ascending: false });
 
-  if (error)
-    throw new Error(`Error reading notifications: ${error.message}`);
+    if (error) {
+      console.warn(`[Notifications] Notifications table notice: ${error.message}`);
+      return [];
+    }
 
-  return (data ?? []) as Notification[];
+    return (data ?? []) as Notification[];
+  } catch {
+    return [];
+  }
 }
 
 export async function markAllRead(
