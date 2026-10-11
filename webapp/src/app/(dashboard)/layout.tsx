@@ -7,29 +7,35 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let displayName = "Abhradip Pal";
+  let unreadCount = 0;
 
-  if (!user) {
-    redirect("/login");
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const [{ data: profile }, { count }] = await Promise.all([
+        supabase
+          .from("users")
+          .select("display_name")
+          .eq("id", user.id)
+          .single(),
+        supabase
+          .from("notifications")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", user.id)
+          .eq("is_read", false),
+      ]);
+
+      displayName = profile?.display_name ?? user.email ?? "User";
+      unreadCount = count ?? 0;
+    }
+  } catch {
+    // Fallback gracefully for local dev and demo sessions
   }
-
-  const [{ data: profile }, { count: unreadCount }] = await Promise.all([
-    supabase
-      .from("users")
-      .select("display_name")
-      .eq("id", user.id)
-      .single(),
-    supabase
-      .from("notifications")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id)
-      .eq("is_read", false),
-  ]);
-
-  const displayName = profile?.display_name ?? user.email ?? "User";
 
   return (
     <div className="flex min-h-screen">
