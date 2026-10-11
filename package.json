@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "eval": "npx tsx eval/run-all.ts"
+    "eval": "npx tsx eval/run-all.ts",
+    "benchmarks": "npx -y serve benchmarks-visualization -p 8080"
   }
 }

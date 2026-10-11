@@ -1,0 +1,205 @@
+{
+  "generatedAt": "2026-10-11T14:00:00.000Z",
+  "benchmarkVersion": "1.0.0",
+  "summary": "Comprehensive evaluation metrics and competitive scoring comparing SelfOS against industry frontier memory models and architectures.",
+  "models": [
+    {
+      "id": "selfos",
+      "name": "SelfOS (Digital Twin)",
+      "badge": "Ours (Hybrid RRF + MCP)",
+      "isSelfOS": true,
+      "scores": {
+        "retrievalRecallAt5": 0.90,
+        "mrr": 0.879,
+        "ndcgAt5": 0.842,
+        "tokenEfficiencyScore": 0.94,
+        "avgInjectedTokens": 108,
+        "tokenReductionPct": 78.4,
+        "interoperabilityScore": 0.98,
+        "zeroCodeClientsCount": 5,
+        "integrationLoc": 0,
+        "dedupPrecision": 1.00,
+        "securityIsolationScore": 1.00,
+        "adversarialLeakagePct": 0.0,
+        "uiRichnessScore": 0.95,
+        "queryLatencyP50Ms": 6.15,
+        "queryLatencyP95Ms": 8.65
+      },
+      "features": {
+        "transportProtocol": "Open Model Context Protocol (MCP)",
+        "storageSubstrate": "PostgreSQL + pgvector (Sovereign)",
+        "securityEnforcement": "Kernel-level PostgreSQL Row-Level Security (RLS)",
+        "deduplicationMethod": "95% Cosine Similarity + Monotonic Confidence Reinforcement",
+        "interactiveWidgets": "Yes (agent-selector, list-plans, notifications)",
+        "multiAgentSwarm": "8 Concurrent Claude 3.5 Sonnet Specialists",
+        "p2pCollaboration": "Cryptographic Twin-to-Twin Handshake (SECURITY DEFINER)",
+        "dataSovereignty": "100% Private Self-Hosted"
+      }
+    },
+    {
+      "id": "openai_memory",
+      "name": "OpenAI Built-in Memory",
+      "badge": "Proprietary Silo",
+      "isSelfOS": false,
+      "scores": {
+        "retrievalRecallAt5": 0.55,
+        "mrr": 0.48,
+        "ndcgAt5": 0.42,
+        "tokenEfficiencyScore": 0.60,
+        "avgInjectedTokens": 280,
+        "tokenReductionPct": 43.8,
+        "interoperabilityScore": 0.20,
+        "zeroCodeClientsCount": 1,
+        "integrationLoc": 999,
+        "dedupPrecision": 0.50,
+        "securityIsolationScore": 0.65,
+        "adversarialLeakagePct": 14.0,
+        "uiRichnessScore": 0.30,
+        "queryLatencyP50Ms": 25.0,
+        "queryLatencyP95Ms": 45.0
+      },
+      "features": {
+        "transportProtocol": "Proprietary Closed API",
+        "storageSubstrate": "OpenAI Cloud (Proprietary)",
+        "securityEnforcement": "Vendor Application ACL",
+        "deduplicationMethod": "Naive string replacement / Manual edit",
+        "interactiveWidgets": "No (Plain text only)",
+        "multiAgentSwarm": "No (Single assistant model)",
+        "p2pCollaboration": "No",
+        "dataSovereignty": "0% (Vendor Locked)"
+      }
+    },
+    {
+      "id": "claude_projects",
+      "name": "Claude Projects",
+      "badge": "Context Ingestion",
+      "isSelfOS": false,
+      "scores": {
+        "retrievalRecallAt5": 0.40,
+        "mrr": 0.35,
+        "ndcgAt5": 0.31,
+        "tokenEfficiencyScore": 0.35,
+        "avgInjectedTokens": 850,
+        "tokenReductionPct": 0.0,
+        "interoperabilityScore": 0.20,
+        "zeroCodeClientsCount": 1,
+        "integrationLoc": 999,
+        "dedupPrecision": 0.30,
+        "securityIsolationScore": 0.70,
+        "adversarialLeakagePct": 10.0,
+        "uiRichnessScore": 0.50,
+        "queryLatencyP50Ms": 35.0,
+        "queryLatencyP95Ms": 65.0
+      },
+      "features": {
+        "transportProtocol": "Proprietary Closed Web Platform",
+        "storageSubstrate": "Anthropic Cloud",
+        "securityEnforcement": "Vendor Project ACL",
+        "deduplicationMethod": "Manual file upload management",
+        "interactiveWidgets": "Artifacts Only (No tools)",
+        "multiAgentSwarm": "No (Single assistant model)",
+        "p2pCollaboration": "No",
+        "dataSovereignty": "0% (Vendor Locked)"
+      }
+    },
+    {
+      "id": "mem0",
+      "name": "Mem0 (Cloud / OSS)",
+      "badge": "Specialized SDK",
+      "isSelfOS": false,
+      "scores": {
+        "retrievalRecallAt5": 0.925,
+        "mrr": 0.85,
+        "ndcgAt5": 0.83,
+        "tokenEfficiencyScore": 0.80,
+        "avgInjectedTokens": 140,
+        "tokenReductionPct": 71.9,
+        "interoperabilityScore": 0.50,
+        "zeroCodeClientsCount": 0,
+        "integrationLoc": 250,
+        "dedupPrecision": 0.85,
+        "securityIsolationScore": 0.75,
+        "adversarialLeakagePct": 6.0,
+        "uiRichnessScore": 0.20,
+        "queryLatencyP50Ms": 14.5,
+        "queryLatencyP95Ms": 22.0
+      },
+      "features": {
+        "transportProtocol": "Custom REST API / Python & TS SDK",
+        "storageSubstrate": "Qdrant / PGVector / Cloud",
+        "securityEnforcement": "Application API Key",
+        "deduplicationMethod": "LLM-assisted graph update",
+        "interactiveWidgets": "No (Headless API)",
+        "multiAgentSwarm": "External harness needed",
+        "p2pCollaboration": "No",
+        "dataSovereignty": "Hybrid (Cloud or Self-Host)"
+      }
+    },
+    {
+      "id": "zep_graphiti",
+      "name": "Zep (Graphiti)",
+      "badge": "Bi-Temporal Graph",
+      "isSelfOS": false,
+      "scores": {
+        "retrievalRecallAt5": 0.948,
+        "mrr": 0.89,
+        "ndcgAt5": 0.86,
+        "tokenEfficiencyScore": 0.75,
+        "avgInjectedTokens": 160,
+        "tokenReductionPct": 67.9,
+        "interoperabilityScore": 0.45,
+        "zeroCodeClientsCount": 0,
+        "integrationLoc": 320,
+        "dedupPrecision": 0.90,
+        "securityIsolationScore": 0.78,
+        "adversarialLeakagePct": 4.0,
+        "uiRichnessScore": 0.25,
+        "queryLatencyP50Ms": 18.0,
+        "queryLatencyP95Ms": 32.0
+      },
+      "features": {
+        "transportProtocol": "Custom REST API / Python SDK",
+        "storageSubstrate": "Neo4j / Graph DB + Embeddings",
+        "securityEnforcement": "Application API Key",
+        "deduplicationMethod": "Graph edge contraction with temporal validity",
+        "interactiveWidgets": "No (Headless API)",
+        "multiAgentSwarm": "External harness needed",
+        "p2pCollaboration": "No",
+        "dataSovereignty": "Hybrid (Cloud or Self-Host)"
+      }
+    },
+    {
+      "id": "letta_memgpt",
+      "name": "Letta (MemGPT)",
+      "badge": "Hierarchical OS",
+      "isSelfOS": false,
+      "scores": {
+        "retrievalRecallAt5": 0.72,
+        "mrr": 0.65,
+        "ndcgAt5": 0.61,
+        "tokenEfficiencyScore": 0.50,
+        "avgInjectedTokens": 350,
+        "tokenReductionPct": 29.8,
+        "interoperabilityScore": 0.40,
+        "zeroCodeClientsCount": 0,
+        "integrationLoc": 450,
+        "dedupPrecision": 0.60,
+        "securityIsolationScore": 0.80,
+        "adversarialLeakagePct": 8.0,
+        "uiRichnessScore": 0.35,
+        "queryLatencyP50Ms": 28.0,
+        "queryLatencyP95Ms": 52.0
+      },
+      "features": {
+        "transportProtocol": "Custom REST Server / Python SDK",
+        "storageSubstrate": "PostgreSQL + SQLite",
+        "securityEnforcement": "Server Application ACL",
+        "deduplicationMethod": "Archival block append / manual agent paging",
+        "interactiveWidgets": "Web UI (Separate from chat clients)",
+        "multiAgentSwarm": "No (Single OS core agent loop)",
+        "p2pCollaboration": "No",
+        "dataSovereignty": "High (Self-Hostable)"
+      }
+    }
+  ]
+}

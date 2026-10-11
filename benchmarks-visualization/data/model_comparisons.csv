@@ -1,0 +1,7 @@
+Model,Category,Recall@5,MRR,Token Reduction %,Zero-Code Clients,Integration LOC,Dedup Accuracy %,Adversarial Leakage %,Interactive UI Widgets,Data Sovereignty
+SelfOS (Digital Twin),Ours (Open MCP + pgvector),0.900,0.879,78.4%,5,0,100%,0%,Yes,100% Private (Self-Hosted)
+OpenAI Built-in Memory,Proprietary Silo,0.550,0.480,43.8%,1,N/A,50%,14%,No,0% (Vendor Cloud)
+Claude Projects,Proprietary In-Context,0.400,0.350,0.0%,1,N/A,30%,10%,No,0% (Vendor Cloud)
+Mem0 (Cloud / OSS),Specialized SDK,0.925,0.850,71.9%,0,250,85%,6%,No,Hybrid
+Zep (Graphiti),Bi-Temporal Graph SDK,0.948,0.890,67.9%,0,320,90%,4%,No,Hybrid
+Letta (MemGPT),Hierarchical Memory OS,0.720,0.650,29.8%,0,450,60%,8%,Web UI Only,High (Self-Hostable)

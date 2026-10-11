@@ -288,12 +288,18 @@ When a multi-domain project plan is requested (`create-plan`), the selected agen
 
 To prove uniqueness and validate performance with hard numbers rather than marketing claims, SelfOS contains an automated, deterministic benchmark harness.
 
-### Reproducibility Command
-Execute the full benchmark suite directly from the repository root:
+### Reproducibility & Visualization Commands
+Execute the full benchmark suite or launch the interactive visualization dashboard directly from the repository root:
 ```bash
+# Run 100% reproducible benchmark suite (terminal report)
 npm run eval
+
+# Launch interactive visual analytics dashboard (browser)
+npm run benchmarks
+# Or open directly: start .\benchmarks-visualization\index.html
 ```
 *Environment: Node.js / Windows / Supabase Postgres + pgvector. Execution time: ~5 seconds.*
+*Interactive dashboard & raw JSON/CSV datasets available in [`benchmarks-visualization/`](benchmarks-visualization/).*
 
 ### Data Integrity Policy
 All figures reported below are strictly classified using explicit integrity tags:

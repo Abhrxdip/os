@@ -1,0 +1,80 @@
+{
+  "benchmark": "Phase 3: Baseline Retrieval Comparison",
+  "generatedAt": "2026-10-11T07:52:12.736Z",
+  "environment": "Node.js v25.0.0 / Windows / Supabase PostgreSQL + pgvector",
+  "testDataset": "20 Ground-Truth Developer Memories across 9 semantic categories, 20 test queries",
+  "baselines": [
+    {
+      "id": "baseline_a",
+      "name": "Baseline A: No Memory (Cold LLM Prompt)",
+      "retrievalMethod": "Zero Context Injection",
+      "recallAt5": 0.000,
+      "mrr": 0.000,
+      "ndcgAt5": 0.000,
+      "avgInjectedTokens": 0,
+      "costRatioVsSelfOS": "0.0x",
+      "isSelfOS": false,
+      "tag": "MEASURED"
+    },
+    {
+      "id": "baseline_b",
+      "name": "Baseline B: Full History Stuffing",
+      "retrievalMethod": "Raw Chat Log Dump",
+      "recallAt5": 0.200,
+      "mrr": 0.181,
+      "ndcgAt5": 0.129,
+      "avgInjectedTokens": 499,
+      "costRatioVsSelfOS": "4.6x higher",
+      "isSelfOS": false,
+      "tag": "MEASURED"
+    },
+    {
+      "id": "baseline_c",
+      "name": "Baseline C: BM25 Lexical Retrieval",
+      "retrievalMethod": "Okapi BM25 Keyword Search",
+      "recallAt5": 0.750,
+      "mrr": 0.817,
+      "ndcgAt5": 0.741,
+      "avgInjectedTokens": 95,
+      "costRatioVsSelfOS": "~1.0x",
+      "isSelfOS": false,
+      "tag": "MEASURED"
+    },
+    {
+      "id": "baseline_d",
+      "name": "Baseline D: Summary Bio Memory",
+      "retrievalMethod": "Simulated ChatGPT Bio List",
+      "recallAt5": 0.200,
+      "mrr": 0.136,
+      "ndcgAt5": 0.129,
+      "avgInjectedTokens": 187,
+      "costRatioVsSelfOS": "1.7x higher",
+      "isSelfOS": false,
+      "tag": "MEASURED"
+    },
+    {
+      "id": "selfos_dense",
+      "name": "SelfOS (Dense Semantic Vector)",
+      "retrievalMethod": "Cosine pgvector (1536d)",
+      "recallAt5": 0.875,
+      "mrr": 0.887,
+      "ndcgAt5": 0.842,
+      "avgInjectedTokens": 115,
+      "costRatioVsSelfOS": "1.0x (Baseline)",
+      "isSelfOS": true,
+      "tag": "MEASURED"
+    },
+    {
+      "id": "selfos_hybrid_rrf",
+      "name": "SelfOS + Hybrid RRF (Optimized)",
+      "retrievalMethod": "Dense Vector + BM25 Fusion (k=60)",
+      "recallAt5": 0.900,
+      "mrr": 0.879,
+      "ndcgAt5": 0.842,
+      "avgInjectedTokens": 108,
+      "costRatioVsSelfOS": "1.0x (Optimal)",
+      "isSelfOS": true,
+      "tag": "MEASURED"
+    }
+  ]
+}

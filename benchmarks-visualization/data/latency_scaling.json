@@ -1,0 +1,64 @@
+{
+  "benchmark": "Phase 4 - Test T4: Vector Search Latency Scaling",
+  "generatedAt": "2026-10-11T07:52:12.736Z",
+  "indexingEngine": "PostgreSQL pgvector (HNSW Indexing Simulation)",
+  "dimensions": 1536,
+  "scalingMetrics": [
+    {
+      "scale": "1,000 memories",
+      "scaleCount": 1000,
+      "p50LatencyMs": 1.55,
+      "p95LatencyMs": 2.20,
+      "slaThresholdMs": 50.0,
+      "status": "PASS"
+    },
+    {
+      "scale": "10,000 memories",
+      "scaleCount": 10000,
+      "p50LatencyMs": 4.64,
+      "p95LatencyMs": 6.51,
+      "slaThresholdMs": 50.0,
+      "status": "PASS"
+    },
+    {
+      "scale": "100,000 memories",
+      "scaleCount": 100000,
+      "p50LatencyMs": 6.15,
+      "p95LatencyMs": 8.65,
+      "slaThresholdMs": 50.0,
+      "status": "PASS"
+    }
+  ],
+  "transportProtocolComparison": [
+    {
+      "protocol": "Model Context Protocol (MCP)",
+      "integrationLoc": 0,
+      "setupMinutes": 2,
+      "supportedZeroCodeClients": 5,
+      "p50LatencyMs": 17.69,
+      "p95LatencyMs": 20.24,
+      "toolDiscoveryAccuracyPct": 96.7,
+      "interactiveWidgets": true
+    },
+    {
+      "protocol": "Plain REST / OpenAPI 3.0",
+      "integrationLoc": 120,
+      "setupMinutes": 15,
+      "supportedZeroCodeClients": 1,
+      "p50LatencyMs": 13.98,
+      "p95LatencyMs": 15.87,
+      "toolDiscoveryAccuracyPct": 83.3,
+      "interactiveWidgets": false
+    },
+    {
+      "protocol": "Direct Custom SDK Wrapper",
+      "integrationLoc": 450,
+      "setupMinutes": 45,
+      "supportedZeroCodeClients": 0,
+      "p50LatencyMs": 10.55,
+      "p95LatencyMs": 11.90,
+      "toolDiscoveryAccuracyPct": 100.0,
+      "interactiveWidgets": false
+    }
+  ]
+}
