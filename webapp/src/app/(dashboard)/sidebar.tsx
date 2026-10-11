@@ -13,6 +13,7 @@ import {
   Inbox,
   Settings,
   LogOut,
+  RefreshCw,
 } from "lucide-react";
 
 interface NavItem {
@@ -30,6 +31,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   },
   { href: "/twin", label: "My Twin", icon: <Bot size={18} /> },
   { href: "/twin/memories", label: "Memories", icon: <Database size={16} />, sub: true },
+  { href: "/continuity", label: "Work Continuity", icon: <RefreshCw size={18} /> },
   { href: "/plans", label: "Plans", icon: <ClipboardList size={18} /> },
   { href: "/notifications", label: "Notifications", icon: <Bell size={18} /> },
   { href: "/network", label: "Network", icon: <Users size={18} /> },

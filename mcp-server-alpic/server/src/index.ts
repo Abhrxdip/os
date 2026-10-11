@@ -20,6 +20,22 @@ import {
   createNotification,
 } from "./services/notification-service.js";
 import { checkAvailability } from "./services/calendar-service.js";
+import {
+  createContinuityTask,
+  updateTaskState,
+  saveArtifact,
+  getArtifact,
+  listTaskArtifacts,
+  createCheckpoint,
+  getCheckpoint,
+  listCheckpoints,
+  resumeTask,
+  getTaskById,
+  getTaskTransitions,
+  getStorageBudget,
+  type TaskState,
+  type ArtifactStatus,
+} from "./services/continuity-engine.js";
 
 // ============================================
 // Response helpers (match mcp-use format)
@@ -726,6 +742,412 @@ server.registerTool(
       return mcpError(`Error reading notifications: ${String(err)}`);
     }
   }),
+);
+
+// ============================================
+// WORK CONTINUITY ENGINE TOOLS
+// ============================================
+
+// 1. create-continuity-task
+server.registerTool(
+  "create-continuity-task",
+  {
+    description:
+      "Initialize a new tracked task in the SelfOS Work Continuity Engine. Tracks objective, steps, checkpoints, artifacts, and state transitions so work can be paused, checkpointed, and resumed seamlessly across agents.",
+    inputSchema: {
+      title: z.string().describe("Short title of the task"),
+      objective: z.string().describe("Detailed objective and acceptance criteria of the task"),
+      project_id: z.string().optional().default("default").describe("Project identifier"),
+      plan_steps: z.array(z.string()).optional().describe("Ordered list of plan step descriptions"),
+      budget_bytes: z.number().optional().default(52428800).describe("Storage budget in bytes (default 50MB)"),
+    },
+  },
+  withAuth(async ({ title, objective, project_id, plan_steps, budget_bytes }, { userId, accessToken, clientSource }) => {
+    try {
+      const supabase = createUserClient(accessToken);
+      const task = await createContinuityTask(supabase, userId, {
+        title,
+        objective,
+        projectId: project_id,
+        planSteps: plan_steps,
+        sourcePlatform: clientSource,
+        budgetBytes: budget_bytes,
+      });
+      return object({
+        status: "created",
+        task,
+        message: `Task "${task.title}" initialized with ID ${task.id}. State: ${task.current_state}`,
+      });
+    } catch (err) {
+      return mcpError(`Error creating continuity task: ${String(err)}`);
+    }
+  })
+);
+
+// 2. update-task-state
+server.registerTool(
+  "update-task-state",
+  {
+    description:
+      "Perform a validated state transition on a continuity task. Valid states: queued, in_progress, checkpointing, paused, interrupted, waiting_for_agent, resuming, validating, completed, failed, cancelled. Transition history is recorded.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+      new_state: z.enum([
+        "queued",
+        "in_progress",
+        "checkpointing",
+        "paused",
+        "interrupted",
+        "waiting_for_agent",
+        "resuming",
+        "validating",
+        "completed",
+        "failed",
+        "cancelled",
+      ]).describe("New target state"),
+      trigger: z.string().describe("What triggered this transition (e.g. 'checkpoint_created', 'agent_interrupted', 'tests_passed')"),
+      checkpoint_id: z.string().optional().describe("Associated checkpoint ID if applicable"),
+    },
+  },
+  withAuth(async ({ task_id, new_state, trigger, checkpoint_id }, { userId, accessToken, clientSource }) => {
+    try {
+      const supabase = createUserClient(accessToken);
+      const result = await updateTaskState(supabase, userId, task_id, new_state as TaskState, {
+        trigger,
+        platform: clientSource,
+        checkpointId: checkpoint_id,
+      });
+      return object({
+        status: "updated",
+        current_state: result.task.current_state,
+        transition: result.transition,
+      });
+    } catch (err) {
+      return mcpError(`Error updating task state: ${String(err)}`);
+    }
+  })
+);
+
+// 3. save-artifact
+server.registerTool(
+  "save-artifact",
+  {
+    description:
+      "Save a recoverable code file, patch, or partial generation to the Work Continuity Engine. Automatically computes SHA-256 hash, redacts sensitive credentials, tracks version numbers, and deduplicates identical content.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+      path: z.string().describe("Relative file path (e.g. 'src/components/Button.tsx' or 'requirements.md')"),
+      content: z.string().describe("Full content of the file or partial code"),
+      status: z.enum([
+        "planned",
+        "partially_generated",
+        "persisted",
+        "applied",
+        "validated",
+        "completed",
+      ]).default("persisted").describe("Artifact status"),
+      diff: z.string().optional().describe("Optional git diff or patch"),
+    },
+  },
+  withAuth(async ({ task_id, path: filePath, content, status, diff }, { userId, accessToken, clientSource }) => {
+    try {
+      const supabase = createUserClient(accessToken);
+      const artifact = await saveArtifact(supabase, userId, task_id, {
+        path: filePath,
+        content,
+        status: status as ArtifactStatus,
+        diff,
+        sourcePlatform: clientSource,
+      });
+      return object({
+        status: "saved",
+        artifact_id: artifact.id,
+        path: artifact.path,
+        version: artifact.version,
+        content_hash: artifact.content_hash,
+        size_bytes: artifact.size_bytes,
+        artifact_status: artifact.status,
+      });
+    } catch (err) {
+      return mcpError(`Error saving artifact: ${String(err)}`);
+    }
+  })
+);
+
+// 4. get-artifact
+server.registerTool(
+  "get-artifact",
+  {
+    description: "Retrieve exact recoverable content and metadata for a saved file artifact.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+      path: z.string().describe("File path to retrieve"),
+      version: z.number().optional().describe("Optional specific version number (defaults to latest)"),
+    },
+  },
+  withAuth(async ({ task_id, path: filePath, version }, { userId }) => {
+    try {
+      const artifact = getArtifact(userId, task_id, filePath, version);
+      if (!artifact) {
+        return mcpError(`Artifact "${filePath}" not found for task ${task_id}.`);
+      }
+      return object({ artifact });
+    } catch (err) {
+      return mcpError(`Error getting artifact: ${String(err)}`);
+    }
+  })
+);
+
+// 5. list-artifacts
+server.registerTool(
+  "list-artifacts",
+  {
+    description: "List all versioned recoverable artifacts for a continuity task.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+    },
+  },
+  withAuth(async ({ task_id }, { userId }) => {
+    try {
+      const artifacts = listTaskArtifacts(userId, task_id);
+      return object({
+        task_id,
+        count: artifacts.length,
+        artifacts: artifacts.map((a) => ({
+          id: a.id,
+          path: a.path,
+          version: a.version,
+          status: a.status,
+          size_bytes: a.size_bytes,
+          content_hash: a.content_hash.slice(0, 10),
+          created_at: a.created_at,
+        })),
+      });
+    } catch (err) {
+      return mcpError(`Error listing artifacts: ${String(err)}`);
+    }
+  })
+);
+
+// 6. create-checkpoint
+server.registerTool(
+  "create-checkpoint",
+  {
+    description:
+      "Create a point-in-time recovery checkpoint capturing completed steps, pending work, artifact snapshots, and the exact next recommended action so any agent can resume uninterrupted.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+      name: z.string().describe("Descriptive checkpoint name (e.g. 'checkpoint-step-2-auth-wired')"),
+      summary: z.string().describe("Summary of what was achieved and current state"),
+      completed_steps: z.array(z.string()).describe("List of completed step descriptions"),
+      pending_steps: z.array(z.string()).describe("List of remaining steps to do"),
+      next_recommended_action: z.string().describe("Exact next action the resuming agent should take"),
+      git_ref: z.string().optional().describe("Optional git commit SHA or branch"),
+    },
+  },
+  withAuth(async ({ task_id, name, summary, completed_steps, pending_steps, next_recommended_action, git_ref }, { userId, accessToken }) => {
+    try {
+      const supabase = createUserClient(accessToken);
+      const checkpoint = await createCheckpoint(supabase, userId, task_id, {
+        name,
+        summary,
+        completedSteps: completed_steps.map((desc, i) => ({ id: `c-${i + 1}`, description: desc, status: "completed" })),
+        pendingSteps: pending_steps.map((desc, i) => ({ id: `p-${i + 1}`, description: desc, status: "pending" })),
+        nextRecommendedAction: next_recommended_action,
+        gitRef: git_ref,
+      });
+      return object({
+        status: "checkpoint_created",
+        checkpoint_id: checkpoint.id,
+        checkpoint,
+      });
+    } catch (err) {
+      return mcpError(`Error creating checkpoint: ${String(err)}`);
+    }
+  })
+);
+
+// 7. get-checkpoint
+server.registerTool(
+  "get-checkpoint",
+  {
+    description: "Retrieve a specific checkpoint by ID.",
+    inputSchema: {
+      checkpoint_id: z.string().describe("Checkpoint UUID"),
+    },
+  },
+  withAuth(async ({ checkpoint_id }, { userId }) => {
+    try {
+      const cp = getCheckpoint(userId, checkpoint_id);
+      if (!cp) return mcpError(`Checkpoint ${checkpoint_id} not found.`);
+      return object({ checkpoint: cp });
+    } catch (err) {
+      return mcpError(`Error getting checkpoint: ${String(err)}`);
+    }
+  })
+);
+
+// 8. list-checkpoints
+server.registerTool(
+  "list-checkpoints",
+  {
+    description: "List all chronological checkpoints for a continuity task.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+    },
+  },
+  withAuth(async ({ task_id }, { userId }) => {
+    try {
+      const checkpoints = listCheckpoints(userId, task_id);
+      return object({
+        task_id,
+        count: checkpoints.length,
+        checkpoints,
+      });
+    } catch (err) {
+      return mcpError(`Error listing checkpoints: ${String(err)}`);
+    }
+  })
+);
+
+// 9. resume-task
+server.registerTool(
+  "resume-task",
+  {
+    description:
+      "Resume an interrupted, paused, or handoff task. Restores the latest verified checkpoint, loads all required artifact versions, verifies hashes, and returns a complete continuation package for the receiving agent.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID to resume"),
+      receiving_agent: z.string().optional().describe("Name/type of agent taking over (e.g. 'Cursor IDE', 'ChatGPT')"),
+    },
+  },
+  withAuth(async ({ task_id, receiving_agent }, { userId, accessToken, clientSource }) => {
+    try {
+      const supabase = createUserClient(accessToken);
+      const pkg = await resumeTask(supabase, userId, task_id, {
+        receivingAgent: receiving_agent,
+        receivingPlatform: clientSource,
+      });
+      return object(pkg);
+    } catch (err) {
+      return mcpError(`Error resuming task: ${String(err)}`);
+    }
+  })
+);
+
+// 10. pause-task
+server.registerTool(
+  "pause-task",
+  {
+    description: "Pause an in-progress task gracefully and create a durable checkpoint.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+      reason: z.string().describe("Reason for pausing"),
+      next_action: z.string().describe("Next action when resumed"),
+    },
+  },
+  withAuth(async ({ task_id, reason, next_action }, { userId, accessToken, clientSource }) => {
+    try {
+      const supabase = createUserClient(accessToken);
+      const cp = await createCheckpoint(supabase, userId, task_id, {
+        name: `pause-${Date.now()}`,
+        summary: `Task paused: ${reason}`,
+        completedSteps: [],
+        pendingSteps: [],
+        nextRecommendedAction: next_action,
+      });
+      await updateTaskState(supabase, userId, task_id, "paused", {
+        trigger: "user_pause_request",
+        platform: clientSource,
+        checkpointId: cp.id,
+      });
+      return object({
+        status: "paused",
+        task_id,
+        checkpoint_id: cp.id,
+        message: `Task paused successfully. Resume anytime with resume-task.`,
+      });
+    } catch (err) {
+      return mcpError(`Error pausing task: ${String(err)}`);
+    }
+  })
+);
+
+// 11. get-task-status
+server.registerTool(
+  "get-task-status",
+  {
+    description: "Get full real-time status of a continuity task including state, checkpoints, transitions, and budget.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+    },
+  },
+  withAuth(async ({ task_id }, { userId }) => {
+    try {
+      const task = getTaskById(userId, task_id);
+      if (!task) return mcpError(`Task ${task_id} not found.`);
+      const transitions = getTaskTransitions(userId, task_id);
+      const checkpoints = listCheckpoints(userId, task_id);
+      const artifacts = listTaskArtifacts(userId, task_id);
+      const budget = getStorageBudget(userId);
+      return object({
+        task,
+        current_state: task.current_state,
+        latest_checkpoint: checkpoints[0] ?? null,
+        total_checkpoints: checkpoints.length,
+        total_artifacts: artifacts.length,
+        recent_transitions: transitions.slice(0, 5),
+        storage_budget: budget,
+      });
+    } catch (err) {
+      return mcpError(`Error getting task status: ${String(err)}`);
+    }
+  })
+);
+
+// 12. check-storage-budget
+server.registerTool(
+  "check-storage-budget",
+  {
+    description: "Check the user's Work Continuity storage budget, consumption, and threshold status (normal, warning, critical, exhausted).",
+    inputSchema: {},
+  },
+  withAuth(async (_input, { userId }) => {
+    try {
+      const budget = getStorageBudget(userId);
+      return object({ budget });
+    } catch (err) {
+      return mcpError(`Error checking storage budget: ${String(err)}`);
+    }
+  })
+);
+
+// 13. create-handoff
+server.registerTool(
+  "create-handoff",
+  {
+    description: "Generate a provider-neutral handoff package that can be exported or sent to another AI client or agent.",
+    inputSchema: {
+      task_id: z.string().describe("Task UUID"),
+      target_platform: z.string().default("any").describe("Target platform or agent"),
+    },
+  },
+  withAuth(async ({ task_id, target_platform }, { userId, accessToken }) => {
+    try {
+      const supabase = createUserClient(accessToken);
+      const pkg = await resumeTask(supabase, userId, task_id, {
+        receivingAgent: target_platform,
+        receivingPlatform: target_platform,
+      });
+      return object({
+        handoff_format: "selfos-continuity-v1",
+        exported_at: new Date().toISOString(),
+        package: pkg,
+      });
+    } catch (err) {
+      return mcpError(`Error creating handoff: ${String(err)}`);
+    }
+  })
 );
 
 // ============================================
