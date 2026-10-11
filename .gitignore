@@ -29,7 +29,7 @@ mcp-server-alpic/node_modules/
 *.key
 .session_cache.json
 **/.session_cache.json
-mcp-server-alpic/data/continuity/blobs/
+mcp-server-alpic/data/
 
 # AI assistant tooling
 .claude/

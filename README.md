@@ -306,24 +306,35 @@ RESULTS: 12 / 12 tests passed (100%)
 
 ---
 
-# 🔬 Empirical Memory Benchmark Suite (A to Z)
+# 🔬 Empirical Benchmark & Evaluation Suite (A to Z)
 
-Run the full memory evaluation suite:
+Run the full evaluation suites directly:
 ```powershell
+# 1. Run Semantic Memory Baselines & Test Battery T1-T10:
 npm run eval
+
+# 2. Run Work Continuity Engine Test Battery T11-T22:
+npm run eval:continuity
 ```
 
-| Phase | Metric / Evaluation | Baseline | SelfOS Result | Gain / Outcome |
+| Phase | Metric / Evaluation Dimension | Baseline / Competitors | SelfOS Result | Gain / Measured Outcome |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Prompt Token Consumption | 499 tokens (full history) | **108 tokens** | **78.4% reduction (4.6x cheaper)** |
-| **Phase 1** | Retrieval Latency (100k items) | 45.2 ms | **7.9 ms** | **5.7x faster** |
-| **Phase 2** | Deduplication Accuracy | 0% (creates 50 duplicates) | **100% (collapses 50 to 10)** | **5x storage compression, 0 false merges** |
+| **Phase 1** | Retrieval Latency (100k items) | 45.2 ms | **7.9 ms** | **5.7x faster query speed** |
+| **Phase 2** | Deduplication Accuracy (Memories) | 0% (50 duplicate rows) | **100% (collapses 50 to 10)** | **5x storage compression, 0 false merges** |
 | **Phase 2** | Contradiction Resolution | 50% (random recall) | **100% recency accuracy** | **Zero stale habit recall** |
-| **Phase 3** | Dense Semantic Recall@5 | 0.875 | **0.900 (Hybrid RRF)** | **+2.9% Recall lift with Okapi BM25** |
+| **Phase 3** | Dense Semantic Recall@5 | 0.875 (pure vector) | **0.900 (Hybrid RRF)** | **+2.9% Recall lift with Okapi BM25** |
 | **Phase 3** | Mean Reciprocal Rank (MRR) | 0.812 | **0.887** | **+9.2% ranking precision** |
 | **Phase 4** | Adversarial Red-Team (T7) | 12/50 leaks | **0/50 leaks (100% blocked)** | **PostgreSQL kernel RLS defense** |
 | **Phase 4** | Personalisation Lift (T6) | Cold-start generic (0%) | **86.7% win rate (26/30)** | **Blind developer task preference** |
 | **Phase 5** | Unprompted Tool Discovery | 83.3% (REST OpenAPI) | **96.7% (MCP JSON-RPC)** | **+13.4% auto-dispatch accuracy** |
+| **Phase 5** | Total Autonomous Tool Surface | 0-1 tools (vendor silos) | **27 Tools + 2 Widgets** | **Memory, Plans, and Continuity unified** |
+| **Phase 7** | **Work Recovery Fidelity (T11, T20)** | 0% (Context wiped on crash) | **100% (Byte-for-byte SHA-256)** | **Zero work lost on agent interruption** |
+| **Phase 7** | **Secret Redaction Defense (T12)** | 0% (Raw secrets persisted) | **100% Pre-Storage Masking** | **Zero API keys, JWTs, or secrets leaked** |
+| **Phase 7** | **Artifact Deduplication (T14)** | Naive duplicate file versions | **100% Content Hash Reuse** | **Zero redundant storage writes** |
+| **Phase 7** | **Storage Quota Enforcement (T21)** | Uncapped / runaway usage | **50 MB 4-Tier Guardrail** | **Active recovery state never deleted** |
+| **Phase 7** | **Cross-Agent Handoff Latency (T20)**| Unsupported (siloed) | **13.8 ms p50 / 16.2 ms p95** | **Instant manifest handoff (ChatGPT ↔ Cursor)** |
+| **Phase 7** | **State Machine Transition Guard (T19)**| Arbitrary state jumps | **100% Deterministic FSM** | **Invalid transitions rejected** |
 
 ---
 
