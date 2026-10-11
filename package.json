@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "eval": "npx tsx eval/run-all.ts",
+    "eval:continuity": "node --import ./mcp-server-alpic/node_modules/tsx/dist/esm/index.mjs eval/test-continuity-engine.mjs",
     "benchmarks": "npx -y serve benchmarks-visualization -p 8080"
   }
 }
