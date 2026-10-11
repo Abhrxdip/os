@@ -143,6 +143,25 @@ Here is what makes SelfOS genuinely unique:
 
 ---
 
+### 🗺️ Competitive Positioning Quadrant Chart
+
+```mermaid
+quadrantChart
+    title Personal AI Memory: Sovereignty vs Ecosystem Interoperability
+    x-axis "Vendor Locked (Siloed)" --> "Client Agnostic (Open MCP)"
+    y-axis "Headless / High-Code (SDKs)" --> "Zero-Code / Interactive UI"
+    quadrant-1 "SelfOS Sovereign Ideal"
+    quadrant-2 "Open but Complex"
+    quadrant-3 "Closed & Headless"
+    quadrant-4 "Vendor Walled Gardens"
+    "SelfOS (Digital Twin)": [0.88, 0.90]
+    "OpenAI Built-in Memory": [0.12, 0.60]
+    "Claude Projects": [0.18, 0.55]
+    "Mem0 (Cloud / OSS)": [0.55, 0.30]
+    "Zep (Graphiti)": [0.60, 0.25]
+    "Letta (MemGPT)": [0.45, 0.20]
+```
+
 ### 🥊 Comprehensive Competitive Differentiation Matrix
 
 | Capability / Feature | **SelfOS (Digital Twin)** | **OpenAI Built-in Memory** | **Claude Projects** | **Mem0 / Zep** | **Letta (MemGPT)** |
@@ -310,6 +329,61 @@ Evaluated over 20 ground-truth developer memories across 9 semantic categories a
 | **Baseline D: Summary Memory** | Simulated ChatGPT Bio List | 0.200 | 0.136 | 0.129 | 187 | 1.7x higher |
 | **SelfOS (Dense Semantic Vector)** | Cosine `pgvector` (1536d) | 0.875 | 0.887 | 0.842 | 108–115 | **1.0x (Baseline)** |
 | **SelfOS + Hybrid RRF (Optimized)** | Vector + BM25 Fusion ($k=60$) | **0.900** | **0.879** | **0.842** | **108–115** | **1.0x** |
+
+### 📈 Empirical Benchmark Charts
+
+#### Chart 1: Retrieval Recall@5 Comparison Across Baselines [MEASURED]
+```mermaid
+xychart-beta
+    title "Retrieval Accuracy: Recall@5 Score (Higher is Better)"
+    x-axis ["Cold Prompt", "Full History", "Summary Bio", "BM25 Lexical", "SelfOS Vector", "SelfOS Hybrid RRF"]
+    y-axis "Recall@5" 0.0 --> 1.0
+    bar [0.00, 0.20, 0.20, 0.75, 0.88, 0.90]
+```
+
+```
+Retrieval Recall@5 (Accuracy):
+  Cold LLM Prompt       [                    ]  0.0%
+  Full History Stuffing [████                ] 20.0%
+  Summary Bio Memory    [████                ] 20.0%
+  BM25 Lexical Search   [███████████████     ] 75.0%
+  SelfOS Dense Vector   [█████████████████▌  ] 87.5%
+  SelfOS Hybrid RRF     [██████████████████  ] 90.0%  ✅ (Best)
+```
+
+#### Chart 2: Prompt Token Injection Overhead [MEASURED]
+```mermaid
+xychart-beta
+    title "Context Token Overhead per Query (Lower is Cheaper - 78.4% Cost Reduction)"
+    x-axis ["Full History Stuffing", "Summary Bio List", "SelfOS Injected", "BM25 Lexical"]
+    y-axis "Tokens Injected" 0 --> 550
+    bar [499, 187, 108, 95]
+```
+
+```
+Context Token Overhead (Lower is Cheaper):
+  Full History Stuffing [████████████████████] 499 tokens (4.6x higher cost)
+  Summary Bio Memory    [███████▌            ] 187 tokens (1.7x higher cost)
+  SelfOS Dense Memory   [████                ] 108 tokens (78.4% Reduction)  ✅
+```
+
+#### Chart 3: Client Integration Overhead (Lines of Code Needed)
+```mermaid
+xychart-beta
+    title "Integration Code Needed Across 5 AI Clients (LOC - Lower is Better)"
+    x-axis ["Direct SDK Integration", "REST OpenAPI Actions", "SelfOS Open MCP"]
+    y-axis "Lines of Code (LOC)" 0 --> 500
+    bar [450, 120, 0]
+```
+
+#### Chart 4: Latency Scaling at 1k, 10k, and 100k Memories [MEASURED]
+```mermaid
+xychart-beta
+    title "Query Latency Scaling Across Database Size (Sub-10ms at 100k Scale)"
+    x-axis ["1k (p50)", "1k (p95)", "10k (p50)", "10k (p95)", "100k (p50)", "100k (p95)"]
+    y-axis "Latency (ms)" 0 --> 12
+    bar [1.55, 2.20, 4.64, 6.51, 6.15, 8.65]
+```
 
 ### Benchmark Citations from Literature (Competitor Baselines)
 - **Mem0 OSS / Cloud**: LoCoMo Benchmark: **92.5%** `[CITED]` | LongMemEval: **94.4%** `[CITED]` *(Source: Mem0 Official Benchmark Reports)*.
