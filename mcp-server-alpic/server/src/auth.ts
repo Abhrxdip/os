@@ -37,10 +37,13 @@ export function withAuth<TInput>(
         ? authHeader.slice(7)
         : null;
 
+    console.log(`[MCP Auth] Tool request received. Auth header: ${authHeader ? `Bearer (${token?.slice(0, 10)}...)` : "NONE"}`);
+
     if (!token) {
+      console.warn("[MCP Auth] No Bearer token provided in request. Returning 401 prompt.");
       return {
         content: [
-          { type: "text", text: "Please sign in to use Digital Twin." },
+          { type: "text", text: "Authentication required: Please sign in to your SelfOS account to use your Digital Twin memory." },
         ],
         isError: true,
         _meta: {
@@ -58,9 +61,10 @@ export function withAuth<TInput>(
     const { data, error } = await supabase.auth.getUser(token);
 
     if (error || !data.user) {
+      console.error("[MCP Auth] Token validation failed with Supabase:", error?.message);
       return {
         content: [
-          { type: "text", text: "Please sign in to use Digital Twin." },
+          { type: "text", text: `Session expired or invalid: ${error?.message || "Please sign in again."}` },
         ],
         isError: true,
         _meta: {
@@ -70,6 +74,8 @@ export function withAuth<TInput>(
         },
       };
     }
+
+    console.log(`[MCP Auth] Authenticated user: ${data.user.email} (${data.user.id})`);
 
     const userAgent = ((extra as any).requestInfo?.headers?.["user-agent"] ?? "").toLowerCase();
     const clientSource = userAgent.includes("claude") ? "claude" as const

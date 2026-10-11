@@ -76,40 +76,56 @@ server
             "The memory content in natural language. Be specific and detailed. Example: 'Works as a full-stack developer specializing in React and Node.js at a startup in Turin'",
           ),
         category: z
-          .enum([
-            "identity",
-            "skill",
-            "preference",
-            "decision",
-            "project",
-            "relationship",
-            "opinion",
-            "communication",
-            "goal",
-          ])
-          .describe(
-            "Category: identity (who they are), skill (what they can do), preference (what they like/dislike), decision (past choices), project (current work), relationship (people they know), opinion (views on topics), communication (how they talk), goal (what they want to achieve)",
-          ),
-        metadata: z
           .string()
           .optional()
+          .default("preference")
+          .transform((val) => {
+            const clean = (val || "").toLowerCase().trim();
+            if (clean.includes("skill")) return "skill";
+            if (clean.includes("pref")) return "preference";
+            if (clean.includes("ident")) return "identity";
+            if (clean.includes("decis")) return "decision";
+            if (clean.includes("proj")) return "project";
+            if (clean.includes("relat")) return "relationship";
+            if (clean.includes("opin")) return "opinion";
+            if (clean.includes("comm")) return "communication";
+            if (clean.includes("goal")) return "goal";
+            return "preference";
+          })
           .describe(
-            "Optional metadata as JSON string, e.g. '{\"source\":\"meeting\",\"date\":\"2026-03-26\"}'",
+            "Category: identity, skill, preference, decision, project, relationship, opinion, communication, goal",
+          ),
+        metadata: z
+          .any()
+          .optional()
+          .transform((val) => {
+            if (!val) return undefined;
+            if (typeof val === "object") return val;
+            if (typeof val === "string") {
+              try { return JSON.parse(val); } catch { return { text: val }; }
+            }
+            return undefined;
+          })
+          .describe(
+            "Optional metadata as JSON string or object, e.g. '{\"source\":\"meeting\"}'",
           ),
       },
     },
     withAuth(async ({ content, category, metadata }, { userId, accessToken, clientSource }) => {
       try {
+        console.log(`[save-memory] User: ${userId}, Category: ${category}`);
+        console.log(`[save-memory] Content: ${content}`);
         const supabase = createUserClient(accessToken);
-        const parsedMetadata = metadata ? JSON.parse(metadata) : undefined;
         const result = await saveMemory(supabase, userId, {
           content,
-          category,
+          category: category as any,
           source: clientSource,
-          metadata: parsedMetadata,
+          metadata,
         });
+        console.log(`[save-memory] Success:`, result);
         return object(result);
       } catch (err) {
+        console.error(`[save-memory] Error:`, err);
         return mcpError(`Error saving memory: ${String(err)}`);
       }
     }),
