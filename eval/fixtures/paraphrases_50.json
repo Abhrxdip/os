@@ -1,0 +1,122 @@
+[
+  {
+    "cluster_id": "c1",
+    "base_fact": "I prefer using pnpm instead of npm for managing JavaScript packages.",
+    "category": "preference",
+    "paraphrases": [
+      "I prefer using pnpm instead of npm for managing JavaScript packages.",
+      "My default package manager for Node and JavaScript projects is pnpm.",
+      "I always choose pnpm over npm or yarn when starting new web projects.",
+      "For JS dependency management, pnpm is my preferred package tool.",
+      "I advocate using pnpm over npm due to faster installs and disk space savings."
+    ]
+  },
+  {
+    "cluster_id": "c2",
+    "base_fact": "I prefer async pull request code reviews over sync video meetings.",
+    "category": "preference",
+    "paraphrases": [
+      "I prefer async pull request code reviews over sync video meetings.",
+      "Async code reviews on GitHub are much better for me than real-time Zoom calls.",
+      "I favor asynchronous PR comments instead of live sync review sessions.",
+      "Please review my code asynchronously on GitHub rather than scheduling a video meeting.",
+      "My ideal workflow is async PR feedback rather than sitting in synchronous review calls."
+    ]
+  },
+  {
+    "cluster_id": "c3",
+    "base_fact": "I use Next.js App Router and React 19 for building full-stack web applications.",
+    "category": "skill",
+    "paraphrases": [
+      "I use Next.js App Router and React 19 for building full-stack web applications.",
+      "My primary frontend stack is Next.js App Router combined with React 19.",
+      "I build modern web apps utilizing React 19 and the Next.js App Router structure.",
+      "I am specialized in full-stack Next.js App Router development with React 19.",
+      "Developing web apps using React 19 and Next.js App Router is my core skill."
+    ]
+  },
+  {
+    "cluster_id": "c4",
+    "base_fact": "I choose PostgreSQL with pgvector for relational data and semantic vector embeddings.",
+    "category": "skill",
+    "paraphrases": [
+      "I choose PostgreSQL with pgvector for relational data and semantic vector embeddings.",
+      "Postgres paired with pgvector is my go-to choice for relational and vector storage.",
+      "I rely on PostgreSQL and the pgvector extension for embedding searches.",
+      "For combining relational data with vector similarity, I deploy Postgres pgvector.",
+      "My preferred database stack is PostgreSQL enhanced with pgvector embeddings."
+    ]
+  },
+  {
+    "cluster_id": "c5",
+    "base_fact": "We decided to migrate our frontend state from Redux to Zustand to eliminate boilerplate.",
+    "category": "decision",
+    "paraphrases": [
+      "We decided to migrate our frontend state from Redux to Zustand to eliminate boilerplate.",
+      "Our team switched state management from Redux Toolkit over to Zustand.",
+      "We replaced Redux with Zustand in our frontend code to reduce boilerplate code.",
+      "A key architectural decision was adopting Zustand instead of Redux Toolkit.",
+      "We transitioned all client state from Redux to Zustand for simplicity."
+    ]
+  },
+  {
+    "cluster_id": "c6",
+    "base_fact": "We chose Supabase over Firebase for native Postgres SQL and Row-Level Security.",
+    "category": "decision",
+    "paraphrases": [
+      "We chose Supabase over Firebase for native Postgres SQL and Row-Level Security.",
+      "Our team picked Supabase rather than Firebase due to Postgres RLS policies.",
+      "We decided on Supabase instead of Firebase to keep relational SQL integrity.",
+      "Supabase was selected over Google Firebase because we wanted PostgreSQL and RLS.",
+      "We opted for Supabase instead of Firebase to take advantage of native Postgres features."
+    ]
+  },
+  {
+    "cluster_id": "c7",
+    "base_fact": "I am building SelfOS, an open personal memory layer over Model Context Protocol.",
+    "category": "project",
+    "paraphrases": [
+      "I am building SelfOS, an open personal memory layer over Model Context Protocol.",
+      "My primary open-source project is SelfOS, providing MCP-based personal memory.",
+      "I am developing SelfOS as a personal memory operating system using MCP.",
+      "The project I am actively creating is SelfOS, an AI twin memory system via MCP.",
+      "I work on SelfOS, which connects personal memories to AI clients using MCP."
+    ]
+  },
+  {
+    "cluster_id": "c8",
+    "base_fact": "Elena Vance is our lead designer working on the SelfOS user experience.",
+    "category": "relationship",
+    "paraphrases": [
+      "Elena Vance is our lead designer working on the SelfOS user experience.",
+      "Elena Vance leads product and UX design for the SelfOS application.",
+      "I collaborate with Elena Vance on the UI design and layout of SelfOS.",
+      "Our design lead for SelfOS is Elena Vance, handling user experience.",
+      "Elena Vance is responsible for the user interface and design system of SelfOS."
+    ]
+  },
+  {
+    "cluster_id": "c9",
+    "base_fact": "I believe microservices without distributed tracing introduce severe operational drag.",
+    "category": "opinion",
+    "paraphrases": [
+      "I believe microservices without distributed tracing introduce severe operational drag.",
+      "In my view, microservice architectures lack value if distributed tracing is missing.",
+      "Without distributed tracing, microservices create excessive operational complexity.",
+      "I think breaking a system into microservices without proper tracing is a mistake.",
+      "My opinion is that microservices without distributed traces cause more harm than good."
+    ]
+  },
+  {
+    "cluster_id": "c10",
+    "base_fact": "I prefer concise communication with code examples and markdown diffs over long text.",
+    "category": "communication",
+    "paraphrases": [
+      "I prefer concise communication with code examples and markdown diffs over long text.",
+      "Please communicate concisely using code diffs and markdown blocks rather than essays.",
+      "My preferred communication style is short, clear points with code snippets.",
+      "I favor direct, concise responses with markdown code blocks over verbose explanations.",
+      "Keep explanations short and provide concrete code diffs rather than long text."
+    ]
+  }
+]

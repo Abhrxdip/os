@@ -1,0 +1,242 @@
+[
+  {
+    "id": "task_01",
+    "category": "stack_choice",
+    "prompt": "How should I structure our new web application frontend and API routes?",
+    "key_traits": ["Next.js App Router", "React 19", "TypeScript strict"],
+    "without_memory_baseline": "You can use React with Vite, Next.js Pages router, Remix, or Vue. What framework do you prefer?",
+    "with_memory_response": "Structure the frontend using Next.js 14/15 App Router with React 19 Server Components. Keep API routes in `app/api/` with strict TypeScript typing, avoiding unnecessary client wrappers."
+  },
+  {
+    "id": "task_02",
+    "category": "stack_choice",
+    "prompt": "Which package manager command should I add to our repository README setup instructions?",
+    "key_traits": ["pnpm"],
+    "without_memory_baseline": "You can add `npm install`, `yarn`, or `pnpm install`. Which package manager does your team use?",
+    "with_memory_response": "Add `pnpm install` and `pnpm run dev`. Since your workflow standardizes on pnpm for strict dependency isolation, do not include npm or yarn."
+  },
+  {
+    "id": "task_03",
+    "category": "stack_choice",
+    "prompt": "What database should I choose for storing both relational accounts and AI memory vectors?",
+    "key_traits": ["PostgreSQL", "pgvector", "Supabase", "Row-Level Security"],
+    "without_memory_baseline": "You could use Pinecone for vectors and MongoDB for documents, or PostgreSQL. What are your constraints?",
+    "with_memory_response": "Use PostgreSQL with the `pgvector` extension hosted on Supabase. This maintains relational integrity with strict Row-Level Security (RLS) while providing IVFFlat/HNSW vector search in a single database."
+  },
+  {
+    "id": "task_04",
+    "category": "code_style",
+    "prompt": "Write a quick utility function to debounce user input events in TypeScript.",
+    "key_traits": ["2 spaces", "semicolons", "strict types", "noImplicitAny"],
+    "without_memory_baseline": "Here is a debounce function in JS/TS:\n```js\nfunction debounce(func, wait) {\n    let timeout\n    return function(...args) {\n        clearTimeout(timeout)\n        timeout = setTimeout(() => func(...args), wait)\n    }\n}\n```",
+    "with_memory_response": "```typescript\nexport function debounce<T extends (...args: readonly any[]) => void>(\n  func: T,\n  waitMs: number\n): (...args: Parameters<T>) => void {\n  let timeoutId: ReturnType<typeof setTimeout> | undefined;\n  return (...args: Parameters<T>): void => {\n    if (timeoutId !== undefined) {\n      clearTimeout(timeoutId);\n    }\n    timeoutId = setTimeout(() => {\n      func(...args);\n    }, waitMs);\n  };\n}\n```"
+  },
+  {
+    "id": "task_05",
+    "category": "code_style",
+    "prompt": "How should we manage client-side state in our React components?",
+    "key_traits": ["Zustand", "avoid Redux boilerplate"],
+    "without_memory_baseline": "You can choose between Redux Toolkit, Context API, MobX, or Zustand. How complex is your state?",
+    "with_memory_response": "Use Zustand stores. We previously migrated away from Redux Toolkit to eliminate slice boilerplate and provider tree pollution. Keep stores modular and co-located."
+  },
+  {
+    "id": "task_06",
+    "category": "workflow",
+    "prompt": "Can we schedule a 45-minute sync meeting tomorrow at 10 AM to review my pull request?",
+    "key_traits": ["prefers async PR review over sync meeting"],
+    "without_memory_baseline": "Sure, tomorrow at 10 AM works. I will send a calendar invite for our sync review.",
+    "with_memory_response": "Rather than a synchronous meeting, please post the pull request link on GitHub. As per your preference for async code reviews over Zoom calls, I will review the code with inline diff comments asynchronously."
+  },
+  {
+    "id": "task_07",
+    "category": "tone",
+    "prompt": "Explain the difference between optimistic concurrency control and pessimistic locking.",
+    "key_traits": ["concise", "code/diff/table", "no fluff"],
+    "without_memory_baseline": "Concurrency control is a vital concept in computer science. Imagine two people trying to buy the same airline ticket at the exact same moment in time...",
+    "with_memory_response": "| Strategy | Mechanism | Best For |\n| :--- | :--- | :--- |\n| **Optimistic** | Uses version/timestamp column (`UPDATE ... WHERE version = 1`); fails on conflict. | Low-conflict, high-throughput web apps. |\n| **Pessimistic** | Explicit row lock (`SELECT ... FOR UPDATE`); blocks competing transactions. | High-conflict financial balances. |"
+  },
+  {
+    "id": "task_08",
+    "category": "stack_choice",
+    "prompt": "Recommend a containerization strategy for our backend microservice.",
+    "key_traits": ["Docker multi-stage builds", "Node.js alpine"],
+    "without_memory_baseline": "You can package it in a standard Docker container or deploy directly to Heroku. What runtime do you use?",
+    "with_memory_response": "Use Docker multi-stage builds with `node:22-alpine`. Stage 1 handles dependency resolution via pnpm; Stage 2 compiles TypeScript; Stage 3 copies only production artifacts and node_modules to produce a minimal, secure container."
+  },
+  {
+    "id": "task_09",
+    "category": "architecture",
+    "prompt": "Should our 3-person team split our backend into 6 microservices?",
+    "key_traits": ["anti-microservice without tracing", "modular monolith"],
+    "without_memory_baseline": "Microservices offer great scalability and separation of concerns. It is very popular in enterprise architecture.",
+    "with_memory_response": "No. For a team of this size, 6 microservices introduces severe operational drag in distributed deployments, cross-service debugging, and network latency. Stick with a modular monolith with clean domain boundaries."
+  },
+  {
+    "id": "task_10",
+    "category": "project",
+    "prompt": "What are the primary goals for our SelfOS project this quarter?",
+    "key_traits": ["sub-50ms p95 latency", "Q2 2026 beta launch", "MCP integration"],
+    "without_memory_baseline": "I don't know what SelfOS is. Could you describe your project and timeline?",
+    "with_memory_response": "Key Q2 2026 goals for SelfOS (Twin): (1) deliver sub-50ms p95 search latency across 100k stored memory vectors; (2) release the public self-hosted beta with full Claude Desktop and ChatGPT MCP support."
+  },
+  {
+    "id": "task_11",
+    "category": "relationship",
+    "prompt": "Who should I loop in to review the new Figma design system components for SelfOS?",
+    "key_traits": ["Elena Vance"],
+    "without_memory_baseline": "You should check with whoever handles design or UI on your team.",
+    "with_memory_response": "Tag Elena Vance. She is the lead designer collaborating on SelfOS UI/UX design and wireframes."
+  },
+  {
+    "id": "task_12",
+    "category": "relationship",
+    "prompt": "Who can help me benchmark our Cloudflare tunnel throughput under heavy concurrency?",
+    "key_traits": ["Marcus Rivera"],
+    "without_memory_baseline": "You can ask your system administrator or devops engineer.",
+    "with_memory_response": "Coordinate with Marcus Rivera. He is collaborating on load testing, tunnel stability, and DevOps infrastructure."
+  },
+  {
+    "id": "task_13",
+    "category": "code_style",
+    "prompt": "Should I configure ESLint with strict null checks or loose typing?",
+    "key_traits": ["strict noImplicitAny", "strictNullChecks"],
+    "without_memory_baseline": "Loose typing is faster to write, but strict typing catches more bugs. Choose what fits your speed.",
+    "with_memory_response": "Strict typing with `strictNullChecks` and `noImplicitAny: true`. Your coding standard prohibits implicit any to guarantee compile-time safety across monorepo boundaries."
+  },
+  {
+    "id": "task_14",
+    "category": "workflow",
+    "prompt": "How do you prefer breaking changes to be flagged in technical proposals?",
+    "key_traits": ["bold alerts before implementation steps"],
+    "without_memory_baseline": "You can mention them in the conclusion or changelog section.",
+    "with_memory_response": "Highlight breaking changes at the very top using bold alerts and diff snippets before any implementation steps."
+  },
+  {
+    "id": "task_15",
+    "category": "stack_choice",
+    "prompt": "What protocol should we expose for third-party AI assistants to read our knowledge base?",
+    "key_traits": ["Model Context Protocol (MCP)"],
+    "without_memory_baseline": "You can build a REST API, GraphQL, or custom WebSockets.",
+    "with_memory_response": "Expose Model Context Protocol (MCP). It is the open standard that provides native tool discovery across Claude Desktop, ChatGPT, and Cursor with zero bespoke client glue."
+  },
+  {
+    "id": "task_16",
+    "category": "architecture",
+    "prompt": "How should we isolate user memories in our Postgres database to satisfy enterprise privacy?",
+    "key_traits": ["PostgreSQL Row-Level Security (RLS)", "SECURITY DEFINER RPC"],
+    "without_memory_baseline": "You can filter by `userId` in your application queries in your Node.js backend.",
+    "with_memory_response": "Enforce database-level Row-Level Security (RLS) on the `memories` table combined with `SECURITY DEFINER` functions for permissioned cross-tenant operations. Never rely solely on application-level `WHERE` clauses."
+  },
+  {
+    "id": "task_17",
+    "category": "stack_choice",
+    "prompt": "What vector index algorithm should we benchmark for pgvector?",
+    "key_traits": ["HNSW", "IVFFlat"],
+    "without_memory_baseline": "There are many algorithms like KD-trees and Ball trees.",
+    "with_memory_response": "Benchmark HNSW (`vector_cosine_ops`) for low-latency queries and IVFFlat for memory-constrained deployments, comparing against sequential scan baselines."
+  },
+  {
+    "id": "task_18",
+    "category": "code_style",
+    "prompt": "Do we use 4 spaces or 2 spaces indentation in our TypeScript files?",
+    "key_traits": ["2 spaces"],
+    "without_memory_baseline": "Both are common. 4 spaces is standard in Python, 2 spaces is popular in JavaScript.",
+    "with_memory_response": "2-space indentation strictly, formatted via Prettier/ESLint."
+  },
+  {
+    "id": "task_19",
+    "category": "workflow",
+    "prompt": "What should the commit message format look like for our bug fix?",
+    "key_traits": ["Conventional commits", "concise"],
+    "without_memory_baseline": "You can write 'fixed bug in memory save'.",
+    "with_memory_response": "`fix(memory): resolve race condition in dedup threshold check`"
+  },
+  {
+    "id": "task_20",
+    "category": "project",
+    "prompt": "What language is Project Chronos written in?",
+    "key_traits": ["Rust and TypeScript"],
+    "without_memory_baseline": "Could you provide details about Project Chronos?",
+    "with_memory_response": "Project Chronos is implemented in Rust (for the core index calculation engine) and TypeScript (for client interfaces)."
+  },
+  {
+    "id": "task_21",
+    "category": "stack_choice",
+    "prompt": "Should we migrate to Tailwind CSS v4 or keep writing styled-components?",
+    "key_traits": ["Tailwind CSS", "avoid runtime CSS-in-JS"],
+    "without_memory_baseline": "Styled-components has runtime overhead, but Tailwind has utility classes. Which syntax do you like?",
+    "with_memory_response": "Use Tailwind CSS. Runtime CSS-in-JS like styled-components conflicts with React Server Components in Next.js App Router."
+  },
+  {
+    "id": "task_22",
+    "category": "architecture",
+    "prompt": "How do we prevent duplicate memories from bloating our database when a user repeats facts?",
+    "key_traits": ["95% cosine similarity deduplication", "confidence boost"],
+    "without_memory_baseline": "You can run an exact string equality check on the text column.",
+    "with_memory_response": "Use 95% cosine similarity deduplication on the 1536-dimensional embeddings. If cosine similarity >= 0.95 within the same category, increment confidence by +0.05 rather than inserting a duplicate row."
+  },
+  {
+    "id": "task_23",
+    "category": "tone",
+    "prompt": "Summarize the pull request diff for PR #42.",
+    "key_traits": ["bullet points", "concise", "no fluff"],
+    "without_memory_baseline": "This pull request is an important contribution that touches multiple files across the repository...",
+    "with_memory_response": "- `server/src/memory.ts`: Added fallback vector generation on OpenAI 429 error.\n- `tests/eval.ts`: Added 50 paraphrase fixtures for dedup validation.\n- **Impact**: Zero breaking changes to public MCP tool signatures."
+  },
+  {
+    "id": "task_24",
+    "category": "workflow",
+    "prompt": "Can you check if someone is available for a quick meeting next Monday?",
+    "key_traits": ["check-availability tool", "Google Calendar integration"],
+    "without_memory_baseline": "I don't have access to anyone's schedule. Please ask them directly.",
+    "with_memory_response": "I can check their availability using the `check-availability` tool against their connected Google Calendar for next Monday before proposing a meeting."
+  },
+  {
+    "id": "task_25",
+    "category": "stack_choice",
+    "prompt": "How should we deploy our MCP server to the public internet for remote testing?",
+    "key_traits": ["Cloudflare Tunnel", "cloudflared"],
+    "without_memory_baseline": "You can open port forwarding on your home router or deploy to AWS EC2.",
+    "with_memory_response": "Run `cloudflared tunnel --url http://localhost:3001` to establish a secure, zero-config HTTPS tunnel directly to the MCP server."
+  },
+  {
+    "id": "task_26",
+    "category": "identity",
+    "prompt": "What timezone should we assume for our scheduled background cron jobs?",
+    "key_traits": ["San Francisco", "PST / PDT"],
+    "without_memory_baseline": "What timezone are you located in?",
+    "with_memory_response": "Assume America/Los_Angeles (Pacific Time) based in San Francisco, with cron schedules specified in UTC."
+  },
+  {
+    "id": "task_27",
+    "category": "architecture",
+    "prompt": "How should another user's agent query my twin without exposing my private database?",
+    "key_traits": ["ask-agent", "SECURITY DEFINER", "disclaimer notice"],
+    "without_memory_baseline": "Give them an API key with read-only access to your database.",
+    "with_memory_response": "They must query via the `ask-agent` tool through a `SECURITY DEFINER` function over an accepted connection. The twin analyzes the query using synthesized memories and responds with a mandatory disclaimer, never exposing raw memory rows."
+  },
+  {
+    "id": "task_28",
+    "category": "code_style",
+    "prompt": "Should we use semicolons in our JavaScript / TypeScript code?",
+    "key_traits": ["semicolons required"],
+    "without_memory_baseline": "Some people omit them in standard JS. Both styles are fine.",
+    "with_memory_response": "Yes, semicolons are strictly required in all TypeScript and JavaScript files."
+  },
+  {
+    "id": "task_29",
+    "category": "decision",
+    "prompt": "Why didn't we use a graph database like Neo4j for our first version?",
+    "key_traits": ["simplicity", "PostgreSQL pgvector operational simplicity"],
+    "without_memory_baseline": "Graph databases are great for complex relationship queries. What was your reasoning?",
+    "with_memory_response": "To minimize operational overhead. Postgres with `pgvector` and standard relational schemas provides ACID transactions, simple hosting on Supabase, and RLS without maintaining a separate Neo4j cluster."
+  },
+  {
+    "id": "task_30",
+    "category": "communication",
+    "prompt": "A junior engineer asked for advice on debugging a distributed system latency spike.",
+    "key_traits": ["distributed tracing", "metrics", "actionable checklist"],
+    "without_memory_baseline": "Distributed systems can be very tricky and require a lot of patience. Read documentation on network issues...",
+    "with_memory_response": "1. Inspect distributed traces (look for p99 spans on network hops and DB queries).\n2. Correlate with database connection pool metrics and lock contention.\n3. Check downstream timeout configurations and retry storms.\n4. Avoid guessing without span traces."
+  }
+]

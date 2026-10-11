@@ -1,0 +1,82 @@
+[
+  {
+    "id": "pair_01",
+    "topic": "package_manager",
+    "old_fact": {
+      "content": "I exclusively use npm for installing and managing dependencies.",
+      "category": "preference",
+      "timestamp_offset": -86400
+    },
+    "new_fact": {
+      "content": "I have completely switched from npm to pnpm for all projects and monorepos.",
+      "category": "preference",
+      "timestamp_offset": 0
+    },
+    "test_query": "Which package manager do I use for my projects?",
+    "expected_winner": "pnpm"
+  },
+  {
+    "id": "pair_02",
+    "topic": "database_selection",
+    "old_fact": {
+      "content": "Our backend is built entirely on MySQL 8 with standard relational tables.",
+      "category": "decision",
+      "timestamp_offset": -86400
+    },
+    "new_fact": {
+      "content": "We migrated our database from MySQL to PostgreSQL with pgvector for AI memory support.",
+      "category": "decision",
+      "timestamp_offset": 0
+    },
+    "test_query": "What database engine do we use for our backend?",
+    "expected_winner": "PostgreSQL with pgvector"
+  },
+  {
+    "id": "pair_03",
+    "topic": "css_styling",
+    "old_fact": {
+      "content": "I prefer writing custom Sass stylesheets with BEM naming conventions.",
+      "category": "preference",
+      "timestamp_offset": -86400
+    },
+    "new_fact": {
+      "content": "I have adopted Tailwind CSS utility classes and no longer use custom Sass files.",
+      "category": "preference",
+      "timestamp_offset": 0
+    },
+    "test_query": "What CSS or styling framework should I use for our new component?",
+    "expected_winner": "Tailwind CSS"
+  },
+  {
+    "id": "pair_04",
+    "topic": "state_management",
+    "old_fact": {
+      "content": "We manage all global client state with Redux Toolkit and redux-persist.",
+      "category": "decision",
+      "timestamp_offset": -86400
+    },
+    "new_fact": {
+      "content": "We replaced Redux Toolkit with Zustand stores to simplify state and avoid boilerplate.",
+      "category": "decision",
+      "timestamp_offset": 0
+    },
+    "test_query": "How do we handle global client state management?",
+    "expected_winner": "Zustand"
+  },
+  {
+    "id": "pair_05",
+    "topic": "work_location",
+    "old_fact": {
+      "content": "I am based in New York City working on fintech trading systems.",
+      "category": "identity",
+      "timestamp_offset": -86400
+    },
+    "new_fact": {
+      "content": "I recently relocated to San Francisco and am now building AI agent infrastructure.",
+      "category": "identity",
+      "timestamp_offset": 0
+    },
+    "test_query": "Where do I currently live and what domain am I focused on?",
+    "expected_winner": "San Francisco"
+  }
+]

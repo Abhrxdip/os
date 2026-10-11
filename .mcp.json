@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=cgagltuczlwigplnlnfj"
+    },
+    "digital-twin": {
+      "type": "http",
+      "url": "https://huge-narrow-jennifer-mas.trycloudflare.com/mcp"
+    }
+  }
+}

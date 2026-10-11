@@ -1,0 +1,122 @@
+================================================================================
+SELFOS - LIVE DEMO & SETUP GUIDE
+Connect with ChatGPT, Supabase, and the Web Dashboard
+Author: Abhradip | Repository: https://github.com/Abhrxdip/SelfOS
+================================================================================
+
+Here is the step-by-step guide to run and present a live demo of SelfOS with 
+ChatGPT, Supabase, and the Web Dashboard:
+
+--------------------------------------------------------------------------------
+PHASE 1: ONE-TIME CLOUD SETUP (Takes 2 Minutes)
+--------------------------------------------------------------------------------
+
+Step 1: Run the Database SQL Migration
+Earlier we verified that your Supabase project does not have the database tables 
+created yet. Let's create them:
+1. Go to your Supabase SQL Editor:
+   https://supabase.com/dashboard/project/yxmcpuzjnzxwezurezty/sql/new
+2. Open supabase/migrations/00000_all_in_one.sql on your computer.
+3. Copy the entire file and paste it into the Supabase SQL Editor.
+4. Click Run (green button).
+   (This enables pgvector and creates the users, memories, agents, connections, 
+   and plans tables).
+
+Step 2: Enable Supabase Auth & OAuth Server
+1. In your Supabase Dashboard, go to Authentication > Providers > Email:
+   - Ensure Email is toggled ON (turn off "Confirm email" if you want instant test signups).
+2. Go to Authentication > OAuth Server:
+   - Turn Enable OAuth Server to ON.
+   - Check Allow Dynamic OAuth Apps.
+
+--------------------------------------------------------------------------------
+PHASE 2: LAUNCH THE PROJECT (Open 3 Terminals)
+--------------------------------------------------------------------------------
+
+Terminal 1: Start the Public HTTPS Tunnel for ChatGPT
+ChatGPT needs an HTTPS URL to communicate with your local machine.
+
+Run either:
+# Option A: using cloudflared (recommended, free, no login required)
+cloudflared tunnel --url http://localhost:3001
+
+# Option B: using ngrok
+ngrok http 3001
+
+# Option C: using alpic
+npx -y alpic tunnel --port 3001
+
+Important: Look at the output and copy the HTTPS URL (e.g., https://xxxx.trycloudflare.com).
+Open mcp-server-alpic/.env and set:
+MCP_SERVER_URL=https://xxxx.trycloudflare.com
+
+Terminal 2: Start the MCP Server
+In a second terminal:
+cd c:\Users\abhra\OneDrive\Desktop\DigitalTwin\mcp-server-alpic
+npm run dev
+(Your MCP server is now listening at port 3001 with endpoint /mcp)
+
+Terminal 3: Start the Web Dashboard
+In a third terminal:
+cd c:\Users\abhra\OneDrive\Desktop\DigitalTwin\webapp
+npm run dev
+(Your dashboard is now live at http://localhost:3000)
+
+--------------------------------------------------------------------------------
+PHASE 3: CONNECT MCP IN CHATGPT
+--------------------------------------------------------------------------------
+
+1. Open https://chatgpt.com and log in.
+2. Go to Settings > Connected Apps / Developer / MCP.
+3. Click Add New MCP Server:
+   - Name: SelfOS
+   - Server URL: <YOUR_TUNNEL_URL>/mcp (e.g., https://xxxx.trycloudflare.com/mcp)
+4. Click Connect. When prompted, log in with your Supabase account to authorize access.
+
+--------------------------------------------------------------------------------
+PHASE 4: THE LIVE DEMO SCRIPT (What to Show & Say)
+--------------------------------------------------------------------------------
+
+1. The Opening Pitch (30 seconds)
+"Most AI assistants forget who you are as soon as a chat ends. SelfOS is your 
+personal AI operating system with a centralized memory layer. It lives across 
+any AI client — you can teach it in ChatGPT, inspect it on the Web Dashboard, 
+and collaborate with specialist agents."
+
+2. Scene 1: Autonomous Memory Layer (1 minute)
+In ChatGPT, write naturally:
+"Hi, remember that I am a Senior Full-Stack Engineer who specializes in Next.js 
+and TypeScript, and I prefer async code reviews over long meetings."
+
+What happens:
+- ChatGPT calls the save-memory tool in SelfOS.
+- SelfOS generates a text-embedding-ada-002 vector embedding and stores it in your 
+  Supabase pgvector database.
+- Switch your browser tab to http://localhost:3000/twin/memories:
+- Show the audience that your preferences and skills appeared live in your 
+  dashboard categorized as 'skill' and 'preference'!
+
+3. Scene 2: Semantic Recall (30 seconds)
+In ChatGPT, ask:
+"What do you know about my tech stack and how I like to work?"
+
+What happens:
+- ChatGPT invokes search-memories.
+- SelfOS runs a cosine-similarity search in pgvector and answers with precision 
+  based on what you taught it earlier.
+
+4. Scene 3: Specialist Agent Team & Interactive Widget (1 minute)
+In ChatGPT, say:
+"Show available specialist agents."
+
+What happens:
+- ChatGPT triggers list-agents and renders an interactive visual widget right 
+  inside ChatGPT.
+- It shows the 8 specialist agents (Frontend, Backend, Security, DevOps, UX, PM, Data, Mobile).
+- Now say:
+"Create a plan with the Frontend and Security agents to build an OAuth 2.1 authentication flow."
+- SelfOS spins up Claude specialist agents that write architectural contributions.
+- The collaborative plan is generated and automatically saved to the database.
+- Switch to http://localhost:3000/plans on your web dashboard to show the persisted 
+  plan synced in real time!
+================================================================================

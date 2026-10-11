@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SelfOS Live Demo & Setup Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    @page {
+      size: A4;
+      margin: 20mm 18mm 20mm 18mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1e293b;
+      line-height: 1.55;
+      font-size: 13.5px;
+      background: #ffffff;
+    }
+
+    .header {
+      border-bottom: 2px solid #6366f1;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .meta-bar {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .meta-bar strong {
+      color: #334155;
+    }
+
+    h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-left: 4px solid #6366f1;
+      padding-left: 10px;
+    }
+
+    h3 {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    p, ul, ol {
+      margin-bottom: 10px;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .card.highlight {
+      background: #f5f3ff;
+      border-color: #ddd6fe;
+    }
+
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      overflow-x: auto;
+      margin: 8px 0 12px 0;
+      line-height: 1.45;
+    }
+
+    .quote-box {
+      border-left: 3px solid #6366f1;
+      background: #f8fafc;
+      padding: 10px 14px;
+      margin: 8px 0;
+      font-style: italic;
+      color: #334155;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .steps-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .steps-list > li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 12px;
+    }
+
+    .step-num {
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 20px;
+      height: 20px;
+      background: #6366f1;
+      color: white;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge">Comprehensive Field Guide</div>
+    <h1>SelfOS — Live Demo & Setup Guide</h1>
+    <div class="subtitle">Step-by-step guide to run and present a live demo of SelfOS with ChatGPT, Supabase, and the Web Dashboard</div>
+    <div class="meta-bar">
+      <span>Author: <strong>Abhradip</strong></span>
+      <span>Repository: <strong>https://github.com/Abhrxdip/SelfOS</strong></span>
+    </div>
+  </div>
+
+  <h2>Phase 1: One-Time Cloud Setup (Takes 2 Minutes)</h2>
+  
+  <div class="card">
+    <h3>Step 1: Run the Database SQL Migration</h3>
+    <p>Your Supabase project needs the core tables and vector indexes created:</p>
+    <ol>
+      <li>Go to your <strong>Supabase SQL Editor</strong>: <br/><code>https://supabase.com/dashboard/project/yxmcpuzjnzxwezurezty/sql/new</code></li>
+      <li>Open <code>supabase/migrations/00000_all_in_one.sql</code> on your computer.</li>
+      <li>Copy the entire file and paste it into the SQL Editor.</li>
+      <li>Click <strong>Run</strong> (green button). <em>(This enables <code>pgvector</code> and creates <code>users</code>, <code>memories</code>, <code>agents</code>, <code>connections</code>, and <code>plans</code> tables).</em></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>Step 2: Enable Supabase Auth & OAuth Server</h3>
+    <ol>
+      <li>In your Supabase Dashboard, go to <strong>Authentication &gt; Providers &gt; Email</strong>:
+        <ul>
+          <li>Ensure <strong>Email</strong> is toggled <strong>ON</strong>.</li>
+          <li><em>Tip:</em> Disable "Confirm email" for instant test signups.</li>
+        </ul>
+      </li>
+      <li>Go to <strong>Authentication &gt; OAuth Server</strong>:
+        <ul>
+          <li>Turn <strong>Enable OAuth Server</strong> to <strong>ON</strong>.</li>
+          <li>Check <strong>Allow Dynamic OAuth Apps</strong>.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+
+  <h2>Phase 2: Launch the Project (Open 3 Terminals)</h2>
+
+  <div class="card">
+    <h3>Terminal 1: Start the Public HTTPS Tunnel for ChatGPT</h3>
+    <p>ChatGPT requires an HTTPS public endpoint to reach your local MCP server:</p>
+    <pre># Option A: using cloudflared (recommended, free, zero setup)
+cloudflared tunnel --url http://localhost:3001
+
+# Option B: using ngrok
+ngrok http 3001
+
+# Option C: using alpic
+npx -y alpic tunnel --port 3001</pre>
+    <p><strong>Crucial Step:</strong> Copy your generated tunnel URL (e.g., <code>https://xxxx.trycloudflare.com</code>) and update <code>mcp-server-alpic/.env</code>:</p>
+    <pre>MCP_SERVER_URL=https://xxxx.trycloudflare.com</pre>
+  </div>
+
+  <div class="card">
+    <h3>Terminal 2: Start the MCP Server</h3>
+    <pre>cd c:\Users\abhra\OneDrive\Desktop\DigitalTwin\mcp-server-alpic
+npm run dev</pre>
+    <p><em>(Your MCP server starts on port 3001 with endpoint <code>/mcp</code>)</em></p>
+  </div>
+
+  <div class="card">
+    <h3>Terminal 3: Start the Web Dashboard</h3>
+    <pre>cd c:\Users\abhra\OneDrive\Desktop\DigitalTwin\webapp
+npm run dev</pre>
+    <p><em>(Your dashboard will be live at <code>http://localhost:3000</code>)</em></p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2>Phase 3: Connect MCP in ChatGPT</h2>
+  <div class="card highlight">
+    <ol>
+      <li>Open <strong>https://chatgpt.com</strong> and log into your account.</li>
+      <li>Navigate to <strong>Settings &gt; Connected Apps / Developer / MCP</strong>.</li>
+      <li>Click <strong>Add New MCP Server</strong>:
+        <ul>
+          <li><strong>Name:</strong> <code>SelfOS</code></li>
+          <li><strong>Server URL:</strong> <code>&lt;YOUR_TUNNEL_URL&gt;/mcp</code> <em>(e.g., <code>https://xxxx.trycloudflare.com/mcp</code>)</em></li>
+        </ul>
+      </li>
+      <li>Click <strong>Connect</strong>. Complete the Supabase login dialog when prompted to authorize the OAuth grant.</li>
+    </ol>
+  </div>
+
+  <h2>Phase 4: The Live Demo Script (What to Show & Say)</h2>
+
+  <div class="card">
+    <h3>1. The Opening Pitch (30 seconds)</h3>
+    <div class="quote-box">
+      "Most AI assistants forget who you are as soon as a conversation ends. SelfOS is your personal AI operating system with a centralized memory layer. It lives across any AI client — you can teach it in ChatGPT, inspect it on the Web Dashboard, and collaborate with specialist agents."
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2. Scene 1: Autonomous Memory Layer (1 minute)</h3>
+    <p>In <strong>ChatGPT</strong>, type naturally:</p>
+    <div class="quote-box">
+      "Hi, remember that I am a Senior Full-Stack Engineer who specializes in Next.js and TypeScript, and I prefer async code reviews over long meetings."
+    </div>
+    <p><strong>What happens behind the scenes:</strong></p>
+    <ul>
+      <li>ChatGPT triggers SelfOS's <code>save-memory</code> tool.</li>
+      <li>SelfOS creates a <code>text-embedding-ada-002</code> vector embedding and stores it in Supabase <code>pgvector</code>.</li>
+      <li><strong>Show the audience:</strong> Switch to <code>http://localhost:3000/twin/memories</code> on your dashboard to reveal the memory live and classified into categories!</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>3. Scene 2: Semantic Recall (30 seconds)</h3>
+    <p>In <strong>ChatGPT</strong>, ask:</p>
+    <div class="quote-box">
+      "What do you know about my tech stack and how I like to work?"
+    </div>
+    <p><strong>What happens:</strong> ChatGPT executes <code>search-memories</code> via vector cosine similarity and recites back your exact working profile.</p>
+  </div>
+
+  <div class="card">
+    <h3>4. Scene 3: Specialist Agent Team & Interactive Widget (1 minute)</h3>
+    <p>In <strong>ChatGPT</strong>, say:</p>
+    <div class="quote-box">
+      "Show available specialist agents."
+    </div>
+    <ul>
+      <li>SelfOS invokes <code>list-agents</code> and renders an interactive visual widget directly in ChatGPT showing the 8 specialist agents.</li>
+    </ul>
+    <p>Then say:</p>
+    <div class="quote-box">
+      "Create a plan with the Frontend and Security agents to build an OAuth 2.1 authentication flow."
+    </div>
+    <ul>
+      <li>Claude specialist agents collaborate in parallel to generate actionable architecture.</li>
+      <li>The plan is auto-saved. Show <code>http://localhost:3000/plans</code> to display the synchronized plan!</li>
+    </ul>
+  </div>
+
+</body>
+</html>

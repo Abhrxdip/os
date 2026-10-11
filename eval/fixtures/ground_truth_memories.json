@@ -1,0 +1,122 @@
+[
+  {
+    "id": "mem_01",
+    "category": "identity",
+    "content": "Senior Full-Stack Engineer and Systems Architect with 7+ years of experience in distributed systems.",
+    "confidence": 0.95
+  },
+  {
+    "id": "mem_02",
+    "category": "identity",
+    "content": "Based in San Francisco, working on edge computing and generative AI agent runtimes.",
+    "confidence": 0.90
+  },
+  {
+    "id": "mem_03",
+    "category": "skill",
+    "content": "Expert in TypeScript, React 19, Next.js App Router, Node.js, and server-driven architectures.",
+    "confidence": 0.95
+  },
+  {
+    "id": "mem_04",
+    "category": "skill",
+    "content": "Deep experience with PostgreSQL, pgvector extensions, IVFFlat and HNSW indexing, and database sharding.",
+    "confidence": 0.92
+  },
+  {
+    "id": "mem_05",
+    "category": "skill",
+    "content": "Proficient in Docker multi-stage builds, Kubernetes orchestration, and Cloudflare Workers edge deployment.",
+    "confidence": 0.88
+  },
+  {
+    "id": "mem_06",
+    "category": "preference",
+    "content": "Strongly prefers asynchronous code reviews via GitHub pull requests over synchronous Zoom meetings.",
+    "confidence": 0.95
+  },
+  {
+    "id": "mem_07",
+    "category": "preference",
+    "content": "Prefers pnpm over npm or yarn for monorepo dependency management and strict symlink resolution.",
+    "confidence": 0.92
+  },
+  {
+    "id": "mem_08",
+    "category": "preference",
+    "content": "Enforces 2-space indentation, semicolons required, and strict TypeScript noImplicitAny in all projects.",
+    "confidence": 0.90
+  },
+  {
+    "id": "mem_09",
+    "category": "decision",
+    "content": "Decided to migrate frontend state management from Redux Toolkit to Zustand for reduced boilerplate and zero context wrapper overhead.",
+    "confidence": 0.90
+  },
+  {
+    "id": "mem_10",
+    "category": "decision",
+    "content": "Selected Supabase Postgres with Row-Level Security over Firebase for relational data integrity and pgvector support.",
+    "confidence": 0.93
+  },
+  {
+    "id": "mem_11",
+    "category": "project",
+    "content": "Currently developing SelfOS (Twin), an open-source personal memory layer operating over Model Context Protocol (MCP).",
+    "confidence": 0.95
+  },
+  {
+    "id": "mem_12",
+    "category": "project",
+    "content": "Building Project Chronos, an automated crypto index balancing engine written in Rust and TypeScript.",
+    "confidence": 0.85
+  },
+  {
+    "id": "mem_13",
+    "category": "relationship",
+    "content": "Elena Vance is the lead product designer collaborating on SelfOS UI/UX design and wireframes.",
+    "confidence": 0.90
+  },
+  {
+    "id": "mem_14",
+    "category": "relationship",
+    "content": "Marcus Rivera is the senior DevOps peer collaborating on load testing and Cloudflare tunnel stability.",
+    "confidence": 0.88
+  },
+  {
+    "id": "mem_15",
+    "category": "opinion",
+    "content": "Believes microservices without distributed tracing and clear bounded contexts introduce excessive operational drag compared to modular monoliths.",
+    "confidence": 0.92
+  },
+  {
+    "id": "mem_16",
+    "category": "opinion",
+    "content": "Considers Model Context Protocol (MCP) the foundational open protocol for agent interoperability rather than proprietary vendor APIs.",
+    "confidence": 0.94
+  },
+  {
+    "id": "mem_17",
+    "category": "communication",
+    "content": "Prefers concise, actionable communication with code snippets and markdown diffs rather than verbose narrative explanations.",
+    "confidence": 0.95
+  },
+  {
+    "id": "mem_18",
+    "category": "communication",
+    "content": "Wants warnings and breaking changes highlighted with bold alerts before implementation steps.",
+    "confidence": 0.90
+  },
+  {
+    "id": "mem_19",
+    "category": "goal",
+    "content": "Targeting sub-50ms p95 search latency for the SelfOS MCP server across 100k stored memories.",
+    "confidence": 0.95
+  },
+  {
+    "id": "mem_20",
+    "category": "goal",
+    "content": "Aims to launch the public self-hosted beta of SelfOS with full ChatGPT and Claude Desktop support by Q2 2026.",
+    "confidence": 0.92
+  }
+]

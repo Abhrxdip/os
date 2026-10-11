@@ -1,0 +1,122 @@
+[
+  {
+    "query_id": "q01",
+    "query": "What is my professional background and engineering role?",
+    "target_ids": ["mem_01", "mem_02"],
+    "expected_category": "identity"
+  },
+  {
+    "query_id": "q02",
+    "query": "Where am I currently located?",
+    "target_ids": ["mem_02"],
+    "expected_category": "identity"
+  },
+  {
+    "query_id": "q03",
+    "query": "What frontend frameworks and libraries do I specialize in?",
+    "target_ids": ["mem_03", "mem_09"],
+    "expected_category": "skill"
+  },
+  {
+    "query_id": "q04",
+    "query": "What is my experience with database engines and vector search?",
+    "target_ids": ["mem_04", "mem_10"],
+    "expected_category": "skill"
+  },
+  {
+    "query_id": "q05",
+    "query": "How do I deploy applications to production?",
+    "target_ids": ["mem_05"],
+    "expected_category": "skill"
+  },
+  {
+    "query_id": "q06",
+    "query": "Do I prefer sync meetings or pull request reviews?",
+    "target_ids": ["mem_06"],
+    "expected_category": "preference"
+  },
+  {
+    "query_id": "q07",
+    "query": "Which package manager should we use for our monorepo?",
+    "target_ids": ["mem_07"],
+    "expected_category": "preference"
+  },
+  {
+    "query_id": "q08",
+    "query": "What are my code style rules regarding tabs and semicolons?",
+    "target_ids": ["mem_08"],
+    "expected_category": "preference"
+  },
+  {
+    "query_id": "q09",
+    "query": "Why did we abandon Redux Toolkit?",
+    "target_ids": ["mem_09"],
+    "expected_category": "decision"
+  },
+  {
+    "query_id": "q10",
+    "query": "Why did we choose Supabase over Firebase?",
+    "target_ids": ["mem_10"],
+    "expected_category": "decision"
+  },
+  {
+    "query_id": "q11",
+    "query": "What open source personal memory project am I working on?",
+    "target_ids": ["mem_11", "mem_16"],
+    "expected_category": "project"
+  },
+  {
+    "query_id": "q12",
+    "query": "What is Project Chronos?",
+    "target_ids": ["mem_12"],
+    "expected_category": "project"
+  },
+  {
+    "query_id": "q13",
+    "query": "Who is working on the design and UI for SelfOS?",
+    "target_ids": ["mem_13"],
+    "expected_category": "relationship"
+  },
+  {
+    "query_id": "q14",
+    "query": "Who is helping me with DevOps and load tests?",
+    "target_ids": ["mem_14"],
+    "expected_category": "relationship"
+  },
+  {
+    "query_id": "q15",
+    "query": "What is my opinion on microservices architecture?",
+    "target_ids": ["mem_15"],
+    "expected_category": "opinion"
+  },
+  {
+    "query_id": "q16",
+    "query": "What protocol do I believe agents should standardize on?",
+    "target_ids": ["mem_16", "mem_11"],
+    "expected_category": "opinion"
+  },
+  {
+    "query_id": "q17",
+    "query": "How do I like technical explanations to be formatted?",
+    "target_ids": ["mem_17", "mem_18"],
+    "expected_category": "communication"
+  },
+  {
+    "query_id": "q18",
+    "query": "How should warnings and breaking changes be communicated to me?",
+    "target_ids": ["mem_18", "mem_17"],
+    "expected_category": "communication"
+  },
+  {
+    "query_id": "q19",
+    "query": "What is our latency performance target for search?",
+    "target_ids": ["mem_19"],
+    "expected_category": "goal"
+  },
+  {
+    "query_id": "q20",
+    "query": "When are we planning to launch the SelfOS beta?",
+    "target_ids": ["mem_20"],
+    "expected_category": "goal"
+  }
+]
